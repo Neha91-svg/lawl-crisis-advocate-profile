@@ -68,6 +68,16 @@ This project is configured for Vercel. To deploy:
 ## API Routes
 
 - `GET /api/test`: Returns a JSON message confirming the backend is reachable.
+- `GET /api/profile`: Returns detailed professional profile information for the crisis advocate.
+
+## Why the `/api/profile` route?
+
+The `/api/profile` route is a core component of this application for several reasons:
+
+1.  **Centralized Data Management**: By serving profile details from a dedicated API endpoint, we ensure that the frontend always displays the most up-to-date information without requiring manual updates to the UI code.
+2.  **Scalability**: As the application grows, this route can be easily modified to fetch data from a database (like MongoDB) rather than being hardcoded, allowing for dynamic profile updates.
+3.  **Separation of Concerns**: Keeping profile logic in the backend allows the frontend to focus purely on presentation, following the standard MERN architecture.
+4.  **Integration Ready**: This JSON structure makes it easy for other services or mobile applications to consume the advocate's professional data in a standardized format.
 
 ## License
 

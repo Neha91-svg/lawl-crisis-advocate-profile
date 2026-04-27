@@ -16,6 +16,16 @@ app.get('/api/test', (req, res) => {
   });
 });
 
+app.get('/api/profile', (req, res) => {
+  res.json({
+    name: 'Advocate Neha',
+    specialization: 'Crisis Management & Legal Advocacy',
+    experience: '8+ Years',
+    location: 'New Delhi, India',
+    status: 'active'
+  });
+});
+
 app.get('/', (req, res) => {
   res.send('Crisis Advocate Profile API is running');
 });
