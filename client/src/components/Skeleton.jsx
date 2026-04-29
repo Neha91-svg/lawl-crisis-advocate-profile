@@ -1,5 +1,5 @@
 import './Skeleton.css';
-
+//exported the skeletonBase
 export const SkeletonBase = ({ type, className = "" }) => {
   return <div className={`skeleton skeleton-${type} ${className}`} />;
 };
