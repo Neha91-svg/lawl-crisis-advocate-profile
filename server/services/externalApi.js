@@ -1,9 +1,7 @@
 const axios = require('axios');
 const { apiCache, CACHE_KEYS, TTL } = require('./cache');
 
-/**
- * Fetch latest crisis-related news from News API
- */
+
 const fetchCrisisNews = async () => {
   // Check Cache first
   const cachedNews = apiCache.get(CACHE_KEYS.NEWS);
