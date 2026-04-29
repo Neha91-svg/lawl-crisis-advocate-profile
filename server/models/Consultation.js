@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+// consultation schema
 const ConsultationSchema = new mongoose.Schema({
   name: {
     type: String,
