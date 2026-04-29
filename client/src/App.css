@@ -45,3 +45,24 @@ h1 {
 .result p {
   margin: 0.5rem 0;
 }
+
+.profile-details {
+  text-align: left;
+  line-height: 1.6;
+}
+
+.profile-details p {
+  margin: 0.8rem 0;
+  font-size: 1.1rem;
+}
+
+.loading {
+  font-style: italic;
+  color: #888;
+  margin: 1rem 0;
+}
+
+.error {
+  color: #ff4646;
+  font-weight: bold;
+}

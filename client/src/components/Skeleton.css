@@ -1,0 +1,45 @@
+.skeleton {
+  background: #1e293b;
+  background: linear-gradient(
+    110deg,
+    #1e293b 8%,
+    #334155 18%,
+    #1e293b 33%
+  );
+  border-radius: 5px;
+  background-size: 200% 100%;
+  animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+.skeleton-text {
+  height: 1rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-title {
+  height: 2rem;
+  width: 60%;
+  margin-bottom: 1rem;
+}
+
+.skeleton-circle {
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+}
+
+.skeleton-card {
+  height: 200px;
+  width: 100%;
+  padding: 20px;
+  background: #1e293b;
+  border-radius: 1rem;
+  overflow: hidden;
+}
