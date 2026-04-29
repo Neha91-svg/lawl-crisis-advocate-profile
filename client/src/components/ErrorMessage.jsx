@@ -1,3 +1,4 @@
+//error component
 function ErrorMessage({ message, type = 'general' }) {
   const icons = {
     news: '📰',
