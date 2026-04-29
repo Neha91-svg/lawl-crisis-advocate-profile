@@ -19,10 +19,9 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB Connection Error:', err));
 
-// Rate Limiting: 3 requests per hour
 const consultationLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, // Limit each IP to 3 requests per windowMs
+  max: 3, 
   message: {
     error: 'Too many requests',
     message: 'Only 3 consultation requests are allowed per hour. Please try again later.'
