@@ -1,75 +1,96 @@
 .navbar {
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  padding: 0.75rem 0;
 }
 
 .navbar-container {
   max-width: 1200px;
   margin: auto;
-  padding: 0.8rem 1rem;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+/* LEFT SIDE */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
 .navbar-brand {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #1e3a8a; /* professional blue */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
   text-decoration: none;
 }
 
-.navbar-nav {
+.navbar-logo {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* LINKS */
+.navbar-links {
   display: flex;
-  align-items: center;
-  gap: 1.2rem;
+  gap: 1.5rem;
 }
 
 .nav-link {
-  font-size: 0.95rem;
   color: #374151;
+  font-size: 0.95rem;
   text-decoration: none;
-  transition: 0.2s;
+  font-weight: 500;
 }
 
 .nav-link:hover {
-  color: #2563eb;
+  color: #0056b3;
 }
 
-.search-bar {
-  margin-right: 1rem;
+/* RIGHT SIDE */
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.search-input {
-  padding: 6px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+.user-name {
   font-size: 0.85rem;
+  color: #6b7280;
 }
 
-.btn {
-  padding: 6px 12px;
-  font-size: 0.85rem;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.btn-outline {
-  border: 1px solid #2563eb;
-  color: #2563eb;
-  background: transparent;
-}
-
-.btn-primary {
-  background: #2563eb;
-  color: white;
+/* MOBILE */
+.navbar-toggle {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
   border: none;
 }
 
-.btn-outline:hover,
-.btn-primary:hover {
-  opacity: 0.9;
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .navbar-links.open {
+    display: flex;
+  }
+
+  .navbar-toggle {
+    display: block;
+  }
 }
