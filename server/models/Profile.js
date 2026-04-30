@@ -10,6 +10,10 @@ const profileSchema = new mongoose.Schema({
     enum: ['Criminal Law', 'Corporate Law', 'Family Law', 'Civil Litigation'],
     required: true
   },
+  designation: {
+    type: String,
+    required: true
+  },
   experience: {
     type: String,
     required: true
@@ -17,6 +21,10 @@ const profileSchema = new mongoose.Schema({
   location: {
     type: String,
     required: true
+  },
+  contact: {
+    phone: { type: String, required: true },
+    email: { type: String, required: true }
   },
   photo: {
     type: String,

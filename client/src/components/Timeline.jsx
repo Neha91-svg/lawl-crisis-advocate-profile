@@ -1,22 +1,19 @@
 function Timeline({ events }) {
-  if (!events) return null;
+  if (!events || events.length === 0) return null;
 
   return (
-    <section className="container">
-      <h2 style={{ marginBottom: '3rem', textAlign: 'center' }}>Professional Journey</h2>
-      <div className="timeline">
-        {events.map((event, index) => (
-          <div key={index} className={`timeline-item ${index % 2 === 0 ? 'left' : 'right'}`}>
-            <div className="timeline-content">
-              <h3>{event.year}</h3>
-              <h4>{event.title}</h4>
-              <p>{event.body}</p>
-            </div>
+    <div className="profile-card">
+      <h3 className="section-title">Professional Experience</h3>
+      <div className="timeline-container">
+        {events.map((evt, index) => (
+          <div key={index} className="timeline-event">
+            <div className="timeline-year">{evt.year}</div>
+            <div className="timeline-body">{evt.event}</div>
           </div>
         ))}
       </div>
-    </section>
-  )
+    </div>
+  );
 }
 
-export default Timeline
+export default Timeline;

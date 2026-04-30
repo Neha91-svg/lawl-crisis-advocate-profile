@@ -6,15 +6,21 @@ require('dotenv').config();
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/crisis_advocate';
 
 const specializations = ['Criminal Law', 'Corporate Law', 'Family Law', 'Civil Litigation'];
+const designations = ['Senior Advocate', 'Legal Consultant', 'Managing Partner', 'Associate Advocate', 'Defense Counsel'];
 
 const generateProfiles = (num) => {
   const profiles = [];
   for (let i = 0; i < num; i++) {
     profiles.push({
       name: `Advocate ${faker.person.fullName()}`,
+      designation: faker.helpers.arrayElement(designations),
       specialization: faker.helpers.arrayElement(specializations),
-      experience: `${faker.number.int({ min: 3, max: 25 })}+ Years`,
-      location: `${faker.location.city()}, ${faker.location.country()}`,
+      experience: `${faker.number.int({ min: 3, max: 30 })}+ Years`,
+      location: `${faker.location.city()}`,
+      contact: {
+        phone: faker.phone.number('+91 ##### #####'),
+        email: faker.internet.email()
+      },
       photo: faker.image.avatar(),
       coordinates: [
         faker.location.latitude(),
