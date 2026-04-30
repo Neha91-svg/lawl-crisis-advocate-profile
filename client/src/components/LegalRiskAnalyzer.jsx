@@ -88,14 +88,14 @@ function LegalRiskAnalyzer() {
       <div className="profile-container">
         <div className="risk-analyzer-card">
           <div className="analyzer-header">
-            <h2>AI Legal Risk Analyzer</h2>
-            <p>Describe your issue and get instant guidance on legal severity.</p>
+            <h2>AI Legal Risk Analyzer <span style={{ fontSize: '1.2rem' }}>🌍</span></h2>
+            <p>Describe your issue in <strong>English, Hindi, or any language</strong> for instant guidance.</p>
           </div>
 
           <div className="analyzer-body">
             <div className="textarea-wrapper">
               <textarea
-                placeholder="Ex: I am facing harassment from my landlord regarding the security deposit..."
+                placeholder="Describe your issue (Ex: मुझे मकान मालिक से परेशानी है)..."
                 maxLength={300}
                 value={issue}
                 onChange={(e) => setIssue(e.target.value)}
@@ -123,7 +123,7 @@ function LegalRiskAnalyzer() {
               onClick={handleAnalyze}
               disabled={loading || !issue.trim() || isListening}
             >
-              {loading ? 'Processing Data...' : 'Analyze Risk Severity'}
+              {loading ? 'Analyzing & Translating...' : 'Analyze Risk Severity'}
             </button>
 
             {error && <p className="analyzer-error">{error}</p>}
@@ -140,6 +140,14 @@ function LegalRiskAnalyzer() {
                     Score: <span>{result.score}</span>/100
                   </div>
                 </div>
+
+                {/* Translation Info */}
+                {result.originalText !== result.translatedText && (
+                  <div className="translation-box">
+                    <strong>Translated from detected language:</strong>
+                    <p>"{result.translatedText}"</p>
+                  </div>
+                )}
 
                 <div className="result-content">
                   <h4>Preliminary Suggestion:</h4>

@@ -1,3 +1,5 @@
+const translate = require('translate-google-api');
+
 exports.analyzeLegalRisk = async (req, res) => {
   try {
     const { issue, location } = req.body;
@@ -10,7 +12,21 @@ exports.analyzeLegalRisk = async (req, res) => {
       return res.status(400).json({ error: 'Issue description must not exceed 300 characters.' });
     }
 
-    const text = issue.toLowerCase();
+    let originalText = issue;
+    let translatedText = issue;
+    let detectedLanguage = 'en';
+
+    // Auto-Translation Logic (R6)
+    try {
+      const result = await translate(issue, { to: 'en' });
+      if (result && result[0]) {
+        translatedText = result[0];
+      }
+    } catch (transError) {
+      console.warn('Translation failed, proceeding with original text:', transError.message);
+    }
+
+    const text = translatedText.toLowerCase();
 
     // Rule-based keyword detection logic
     let risk = 'Low';
@@ -49,6 +65,8 @@ exports.analyzeLegalRisk = async (req, res) => {
         score,
         suggestion,
         specialization,
+        originalText,
+        translatedText,
         timestamp: new Date().toISOString()
       });
     }, 1200);

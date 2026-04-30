@@ -21,6 +21,7 @@
     "express-rate-limit": "^8.4.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.5.0",
-    "node-cache": "^5.1.2"
+    "node-cache": "^5.1.2",
+    "translate-google-api": "^1.0.4"
   }
 }
