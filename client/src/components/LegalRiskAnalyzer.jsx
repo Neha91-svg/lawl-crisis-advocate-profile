@@ -1,13 +1,56 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function LegalRiskAnalyzer() {
   const [issue, setIssue] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // Speech Recognition Setup
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+  if (recognition) {
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setIssue(prev => (prev ? `${prev} ${transcript}` : transcript).slice(0, 300));
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech Recognition Error:', event.error);
+      setIsListening(false);
+      if (event.error === 'not-allowed') {
+        setError('Microphone access denied. Please enable permissions.');
+      } else {
+        setError('Speech recognition failed. Please try again.');
+      }
+    };
+  }
+
+  const toggleListening = () => {
+    if (!recognition) {
+      setError('Your browser does not support voice input. Please use Chrome or Edge.');
+      return;
+    }
+
+    if (isListening) {
+      recognition.stop();
+    } else {
+      setError(null);
+      recognition.start();
+    }
+  };
 
   const handleAnalyze = async () => {
     if (!issue.trim()) return;
@@ -58,6 +101,18 @@ function LegalRiskAnalyzer() {
                 onChange={(e) => setIssue(e.target.value)}
                 disabled={loading}
               />
+              
+              <button 
+                className={`btn-mic ${isListening ? 'listening' : ''}`}
+                onClick={toggleListening}
+                title="Voice Input"
+                type="button"
+              >
+                {isListening ? '🛑' : '🎤'}
+              </button>
+
+              {isListening && <div className="listening-indicator">Listening...</div>}
+
               <div className="char-counter">
                 {issue.length}/300
               </div>
@@ -66,7 +121,7 @@ function LegalRiskAnalyzer() {
             <button 
               className="btn-analyze"
               onClick={handleAnalyze}
-              disabled={loading || !issue.trim()}
+              disabled={loading || !issue.trim() || isListening}
             >
               {loading ? 'Processing Data...' : 'Analyze Risk Severity'}
             </button>
