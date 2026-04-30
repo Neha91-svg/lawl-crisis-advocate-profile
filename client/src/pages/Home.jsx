@@ -52,7 +52,6 @@ function Home() {
               </button>
             ))}
           </div>
-        </div>
         </section>
 
         {/* Advocate Horizontal Scroll */}
