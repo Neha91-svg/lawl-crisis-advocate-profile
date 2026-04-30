@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import logo from '../assets/logo.png';
 import './Navbar.css';
@@ -8,6 +8,7 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -15,6 +16,8 @@ function Navbar() {
     logout();
     navigate('/');
   };
+
+  const isHome = location.pathname === '/';
 
   return (
     <nav className="navbar">
@@ -29,8 +32,13 @@ function Navbar() {
 
           <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
             <Link to="/advocates" className="nav-link">Find Advocate</Link>
-            <a href="#rights" className="nav-link">Know Your Rights</a>
-            <a href="#tips" className="nav-link">Legal Tips</a>
+            
+            {isHome && (
+              <>
+                <a href="#rights" className="nav-link">Know Your Rights</a>
+                <a href="#tips" className="nav-link">Legal Tips</a>
+              </>
+            )}
           </div>
         </div>
 
