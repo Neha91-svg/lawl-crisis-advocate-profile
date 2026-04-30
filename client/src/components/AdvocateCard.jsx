@@ -2,52 +2,53 @@ import { useNavigate } from 'react-router-dom';
 
 function AdvocateCard({ advocate }) {
   const navigate = useNavigate();
+  const id = advocate._id || advocate.id;
 
-  const id = advocate._id || advocate.id; // 🔥 safe fallback
+  // Fallback avatar if photo is missing
+  const profileImage = advocate.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(advocate.name)}&background=1e3a8a&color=fff`;
 
   return (
     <div 
-      className="card advocate-card d-flex flex-column"
-      style={{ height: '100%', cursor: 'pointer' }}
+      className="advocate-directory-card"
       onClick={() => navigate(`/advocates/${id}`)}
     >
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <div className="card-badge">
-          {advocate.experience || '5+ yrs'}
+      <div className="card-image-wrapper">
+        <img src={profileImage} alt={advocate.name} className="card-image" />
+        <div className="card-badge-exp">
+          {advocate.experience || '5+ Years'}
         </div>
-        <div>⭐ 4.5</div>
       </div>
 
-      <h3>{advocate.name}</h3>
+      <div className="card-body-main">
+        <span className="card-spec-tag">{advocate.specialization}</span>
+        <h3 className="card-name-title">{advocate.name}</h3>
+        
+        <div className="card-loc-item">
+          <span>📍</span>
+          <span>{advocate.location || 'Consultant'}</span>
+        </div>
 
-      <p className="text-muted">
-        {advocate.specialization}
-      </p>
-
-      <div className="location-tag">
-        📍 {advocate.location}
-      </div>
-
-      <div style={{ marginTop: 'auto' }} className="d-flex flex-column gap-2">
-        <button 
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate(`/advocates/${id}`);
-          }} 
-          className="btn btn-outline w-100"
-        >
-          View Profile
-        </button>
-
-        <button 
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate(`/advocates/${id}?book=true`);
-          }} 
-          className="btn btn-primary w-100"
-        >
-          Book Consultation
-        </button>
+        <div className="card-footer-actions">
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/advocates/${id}`);
+            }} 
+            className="btn-card-primary"
+          >
+            View Full Profile
+          </button>
+          
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/advocates/${id}?book=true`);
+            }} 
+            className="btn-card-outline"
+          >
+            Book Consultation
+          </button>
+        </div>
       </div>
     </div>
   );

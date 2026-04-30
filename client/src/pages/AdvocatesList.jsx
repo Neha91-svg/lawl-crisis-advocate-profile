@@ -16,68 +16,90 @@ function AdvocatesList() {
       .finally(() => setLoading(false));
   }, []);
 
-  const specializations = ['All', 'Criminal Defense & Human Rights', 'Crisis Management & Legal Advocacy', 'Family Law & Civil Litigation', 'Corporate Crisis & Financial Law'];
+  const specializations = [
+    'All', 
+    'Criminal Law', 
+    'Corporate Law', 
+    'Family Law', 
+    'Civil Litigation'
+  ];
 
   const filteredAdvocates = advocates.filter(adv => {
-    const name = adv.name || '';
-    const location = adv.location || '';
+    // Safely extract and normalize fields to prevent crashes
+    const name = (adv.name || '').toLowerCase().trim();
+    const location = (adv.location || '').toLowerCase().trim();
+    const specialization = (adv.specialization || '').toLowerCase().trim();
+    
+    const searchTerm = search.toLowerCase().trim();
+    const filterTerm = filter.toLowerCase().trim();
 
-    const matchesFilter = filter === 'All' || adv.specialization === filter;
-    const matchesSearch =
-      name.toLowerCase().includes(search.toLowerCase()) ||
-      location.toLowerCase().includes(search.toLowerCase());
+    // Fix 1: Robust filtering for "All" and partial matches
+    const matchesFilter = filterTerm === 'all' || specialization === filterTerm;
+
+    // Fix 2: Multi-field search (Name or Location)
+    const matchesSearch = name.includes(searchTerm) || location.includes(searchTerm);
 
     return matchesFilter && matchesSearch;
   });
 
   if (loading) {
-    return <div className="container" style={{ padding: '4rem 0', textAlign: 'center' }}>Loading advocates...</div>;
+    return <div className="profile-page-wrapper" style={{ padding: '4rem 0', textAlign: 'center' }}>Loading advocates...</div>;
   }
 
   return (
-    <div className="container" style={{ padding: '4rem 15px' }}>
-      <h1 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', textAlign: 'center' }}>Our Verified Advocates</h1>
-      <p className="text-muted text-center" style={{ marginBottom: '3rem', maxWidth: '600px', margin: '0 auto 3rem auto' }}>
-        Browse our comprehensive directory of trusted legal professionals. Use the search and filters below to find the right advocate for your specific needs.
-      </p>
+    <div className="profile-page-wrapper" style={{ paddingBottom: '4rem' }}>
+      <div className="profile-container" style={{ paddingTop: '4rem' }}>
+        <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', textAlign: 'center', color: 'var(--primary)' }}>Our Verified Advocates</h1>
+        <p style={{ marginBottom: '3rem', maxWidth: '700px', margin: '0 auto 3rem auto', textAlign: 'center', color: 'var(--text-secondary)' }}>
+          Browse our comprehensive directory of trusted legal professionals. Use the search and filters below to find the right advocate for your specific needs.
+        </p>
 
-      {/* Search and Filter */}
-      <div className="card mb-4" style={{ padding: '1.5rem' }}>
-        <div className="grid md:grid-cols-2" style={{ gap: '1rem' }}>
-          <div>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search by name or location..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-          <div>
-            <select
-              className="form-control"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              style={{ cursor: 'pointer' }}
-            >
-              {specializations.map(spec => (
-                <option key={spec} value={spec}>{spec}</option>
-              ))}
-            </select>
+        {/* Search and Filter Section */}
+        <div className="profile-card" style={{ marginBottom: '3rem', padding: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <label style={{ fontWeight: '600', fontSize: '0.9rem' }}>Search Professionals</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search by name or city..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <label style={{ fontWeight: '600', fontSize: '0.9rem' }}>Filter by Specialization</label>
+              <select
+                className="form-control"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                style={{ cursor: 'pointer' }}
+              >
+                {specializations.map(spec => (
+                  <option key={spec} value={spec}>{spec}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Advocates Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {filteredAdvocates.length > 0 ? (
-          filteredAdvocates.map(adv => (
-            <AdvocateCard key={adv._id || adv.id} advocate={adv} />))
-        ) : (
-          <div className="text-center w-100 text-muted" style={{ gridColumn: '1 / -1', padding: '3rem' }}>
-            No advocates found matching your search criteria.
-          </div>
-        )}
+        {/* Advocates Grid - Responsive & Equal Heights */}
+        <div className="advocates-grid">
+          {filteredAdvocates.length > 0 ? (
+            filteredAdvocates.map(adv => (
+              <AdvocateCard key={adv._id || adv.id} advocate={adv} />
+            ))
+          ) : (
+            <div className="error-fallback-card" style={{ gridColumn: '1 / -1' }}>
+              <div className="error-icon">🔍</div>
+              <h3>No Results Found</h3>
+              <p>We couldn't find any advocates matching "{search}" in the "{filter}" category. Try clearing your filters or searching for a different name.</p>
+              <button className="btn-retry" onClick={() => { setSearch(''); setFilter('All'); }}>
+                Clear Filters
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
