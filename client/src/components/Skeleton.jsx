@@ -20,3 +20,9 @@ export const SkeletonHero = () => (
     <SkeletonBase type="text" style={{ margin: '1rem auto 0', width: '20%' }} />
   </div>
 );
+
+export const SkeletonMap = () => (
+  <div className="skeleton-card" style={{ height: '300px', width: '100%', marginBottom: '2rem' }}>
+    <SkeletonBase type="title" style={{ height: '100%', width: '100%', margin: 0, opacity: 0.5 }} />
+  </div>
+);

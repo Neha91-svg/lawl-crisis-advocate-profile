@@ -48,26 +48,7 @@ app.get('/api/profile/:id', async (req, res) => {
   if (!advocate) {
     return res.status(404).json({ error: 'Advocate not found' });
   }
-
-  try {
-    const [lat, lng] = advocate.coordinates || [28.6139, 77.2090];
-    // Parallel Fetching: Profile details, News, and Centers
-    const [news, centers] = await Promise.all([
-      fetchCrisisNews(advocate.specialization).catch(err => {
-        console.error('News fetch error:', err.message);
-        return null;
-      }),
-      fetchNearbyCenters(lat, lng).catch(err => {
-        console.error('Centers fetch error:', err.message);
-        return null;
-      })
-    ]);
-
-    res.json({ ...advocate, recentNews: news, nearbyCenters: centers });
-  } catch (error) {
-    console.error('Unified Profile API Error:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+  res.json(advocate);
 });
 
 app.get('/api/profile/basic', (req, res) => {

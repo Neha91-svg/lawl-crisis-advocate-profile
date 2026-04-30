@@ -7,7 +7,7 @@ import Timeline from '../components/Timeline'
 import ContactForm from '../components/ContactForm'
 import ErrorMessage from '../components/ErrorMessage'
 import LeafletMap from '../components/LeafletMap'
-import { SkeletonHero, SkeletonCard } from '../components/Skeleton'
+import { SkeletonHero, SkeletonCard, SkeletonMap } from '../components/Skeleton'
 import '../Profile.css'
 
 function ProfilePage() {
@@ -22,22 +22,44 @@ function ProfilePage() {
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL || ''
 
-    // Fetch Aggregated Profile (includes news and details)
+    // Fetch Profile instantly
     axios.get(`${apiUrl}/api/profile/${id}`)
       .then(res => {
-        setProfile(res.data)
-        setNews(res.data.recentNews)
-        setCenters(res.data.nearbyCenters)
+        const advocate = res.data
+        setProfile(advocate)
         setLoadingProfile(false)
-        setLoadingNews(false)
-        setLoadingCenters(false)
+
+        // 1. Independently fetch News
+        axios.get(`${apiUrl}/api/news`, { params: { specialization: advocate.specialization } })
+          .then(newsRes => {
+            setNews(newsRes.data)
+            setLoadingNews(false)
+          })
+          .catch(err => {
+            console.error('News error:', err)
+            setNews(null)
+            setLoadingNews(false)
+          })
+
+        // 2. Independently fetch Centers
+        const [lat, lng] = advocate.coordinates || [28.6139, 77.2090]
+        axios.get(`${apiUrl}/api/nearby-centers`, { params: { lat, lng } })
+          .then(centersRes => {
+            setCenters(centersRes.data)
+            setLoadingCenters(false)
+          })
+          .catch(err => {
+            console.error('Centers error:', err)
+            setCenters(null)
+            setLoadingCenters(false)
+          })
+
       })
       .catch(err => {
-        console.error(err)
+        console.error('Profile error:', err)
         setLoadingProfile(false)
         setLoadingNews(false)
         setLoadingCenters(false)
-        setCenters(null)
       })
 
   }, [id])
@@ -72,6 +94,7 @@ function ProfilePage() {
           <h2 style={{ marginBottom: '2rem', textAlign: 'center' }}>Nearby Resource Centers</h2>
           
           {!loadingCenters && centers && <LeafletMap centers={centers} userLocation={profile?.coordinates} />}
+          {loadingCenters && <SkeletonMap />}
 
           <div className="credentials-grid">
             {loadingCenters ? (
