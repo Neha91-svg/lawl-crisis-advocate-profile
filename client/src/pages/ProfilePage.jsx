@@ -22,23 +22,52 @@ function ProfilePage() {
 
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL || '';
+    
+    // Using native fetch for stream support (R3 One API Call + R4 Progressive Loading)
+    const loadProfileData = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/api/profile-full/${id}`);
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
 
-    axios.get(`${apiUrl}/api/profile-full/${id}`)
-      .then(res => {
-        setProfile(res.data.profile);
-        setNews(res.data.news);
-        setCenters(res.data.centers);
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
 
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop(); // Keep partial last line in buffer
+
+          for (const line of lines) {
+            if (!line.trim()) continue;
+            try {
+              const { type, data, error } = JSON.parse(line);
+              
+              if (type === 'profile') {
+                setProfile(data);
+                setLoadingProfile(false);
+              } else if (type === 'news') {
+                setNews(data);
+                setLoadingNews(false);
+              } else if (type === 'centers') {
+                setCenters(data);
+                setLoadingCenters(false);
+              }
+            } catch (e) {
+              console.error('Error parsing stream chunk:', e);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Fetch Error:', err);
         setLoadingProfile(false);
         setLoadingNews(false);
         setLoadingCenters(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoadingProfile(false);
-        setLoadingNews(false);
-        setLoadingCenters(false);
-      });
+      }
+    };
+
+    loadProfileData();
 
   }, [id]);
 

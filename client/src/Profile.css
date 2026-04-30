@@ -292,11 +292,53 @@
   margin: 1.5rem 0;
 }
 
-.ref-box code {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary);
-  letter-spacing: 2px;
+.error-fallback-card {
+  background: var(--bg-surface);
+  border: 1px dashed #ef4444;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 250px;
+  width: 100%;
+}
+
+.error-icon {
+  font-size: 2.5rem;
+  opacity: 0.8;
+}
+
+.error-fallback-card h3 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.error-fallback-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 300px;
+  margin: 0;
+}
+
+.btn-retry {
+  background: none;
+  border: 1px solid var(--border-light);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-retry:hover {
+  background: var(--bg-subtle);
+  border-color: var(--accent);
 }
 
 .profile-container {

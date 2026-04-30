@@ -4,33 +4,51 @@ const { fetchCrisisNews, fetchNearbyCenters } = require('../services/externalApi
 exports.getFullProfile = async (req, res) => {
   const { id } = req.params;
 
+  // Set headers for streaming (NDJSON format)
+  res.setHeader('Content-Type', 'application/x-ndjson');
+  res.setHeader('Transfer-Encoding', 'chunked');
+
   try {
-    const profilePromise = Profile.findById(id);
+    // 1. Fetch Profile first (High Priority)
+    const profile = await Profile.findById(id);
 
-    const [profileResult] = await Promise.allSettled([profilePromise]);
-
-    if (profileResult.status === 'rejected' || !profileResult.value) {
+    if (!profile) {
       return res.status(404).json({ error: 'Profile not found' });
     }
 
-    const profile = profileResult.value;
+    // Stream the profile immediately to satisfy R4 (UI doesn't block)
+    res.write(JSON.stringify({ type: 'profile', data: profile }) + '\n');
+
+    // 2. Spawn external API calls in parallel (R3 Aggregation)
     const newsPromise = fetchCrisisNews(profile.specialization);
     const [lat, lng] = profile.coordinates || [28.6139, 77.2090];
     const centersPromise = fetchNearbyCenters(lat, lng);
 
-    const [news, centers] = await Promise.allSettled([
-      newsPromise,
-      centersPromise
-    ]);
+    // Use Promise.allSettled but process each as it completes for true progressive loading
+    const tasks = [
+      newsPromise.then(data => {
+        res.write(JSON.stringify({ type: 'news', data }) + '\n');
+      }).catch(err => {
+        res.write(JSON.stringify({ type: 'news', data: null, error: true }) + '\n');
+      }),
+      centersPromise.then(data => {
+        res.write(JSON.stringify({ type: 'centers', data }) + '\n');
+      }).catch(err => {
+        res.write(JSON.stringify({ type: 'centers', data: null, error: true }) + '\n');
+      })
+    ];
 
-    res.json({
-      profile: profile,
-      news: news.status === 'fulfilled' ? news.value : null,
-      centers: centers.status === 'fulfilled' ? centers.value : null
-    });
+    await Promise.allSettled(tasks);
+    res.end();
 
   } catch (err) {
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Streaming Error:', err.message);
+    // If headers haven't been sent, we can still send a standard error
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.end();
+    }
   }
 };
 
