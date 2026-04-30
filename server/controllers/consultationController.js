@@ -27,7 +27,8 @@ exports.createConsultation = async (req, res) => {
       phone,
       issue,
       timeSlot,
-      referenceId
+      referenceId,
+      userId: req.user ? req.user.id : null // Save user ID if authenticated
     });
 
     await newConsultation.save();
@@ -40,5 +41,18 @@ exports.createConsultation = async (req, res) => {
   } catch (error) {
     console.error('Consultation Controller Error:', error.message);
     res.status(500).json({ error: 'Internal server error while saving consultation' });
+  }
+};
+
+exports.getUserConsultations = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Unauthorized access' });
+    }
+    
+    const consultations = await Consultation.find({ userId: req.user.id }).sort({ createdAt: -1 });
+    res.json(consultations);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch consultations' });
   }
 };

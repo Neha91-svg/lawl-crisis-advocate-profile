@@ -6,6 +6,8 @@ import ProfilePage from './pages/ProfilePage';
 import AdvocatesList from './pages/AdvocatesList';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import MyConsultations from './pages/MyConsultations';
+import ResourceHub from './pages/ResourceHub';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="/advocates/:id" element={<ProfilePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/my-consultations" element={<MyConsultations />} />
+          <Route path="/resources" element={<ResourceHub />} />
         </Routes>
       </div>
       <Footer />

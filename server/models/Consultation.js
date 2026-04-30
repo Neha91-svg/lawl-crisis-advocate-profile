@@ -32,6 +32,11 @@ const ConsultationSchema = new mongoose.Schema({
     default: 'pending',
     enum: ['pending', 'contacted', 'resolved']
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false // Optional for anonymous requests, but required for authenticated flow
+  },
   createdAt: {
     type: Date,
     default: Date.now
