@@ -1,17 +1,17 @@
 /* Main global styles and theme variables - LexConnect Natural Light Theme */
 :root {
-  --text-primary: #212529;
-  --text-secondary: #6c757d;
-  --text-light: #f8f9fa;
-  --bg-body: #f8f9fa;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-light: #ffffff;
+  --bg-body: #f0f8ff;
   --bg-card: #ffffff;
-  --border-color: #dee2e6;
-  --border-light: #e9ecef;
+  --border-color: #dbe4f0;
+  --border-light: #e6f2ff;
   
-  --primary-accent: #0d6efd;
-  --primary-hover: #0b5ed7;
-  --secondary-accent: #e9ecef;
-  --secondary-hover: #dde0e3;
+  --primary-accent: #0056b3;
+  --primary-hover: #004494;
+  --secondary-accent: #e6f2ff;
+  --secondary-hover: #cce5ff;
 
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
   --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
@@ -80,7 +80,7 @@ p {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
-  padding: 1.5rem;
+  padding: 2rem;
   transition: box-shadow 0.2s ease;
 }
 
@@ -199,7 +199,7 @@ p {
 /* Grid systems */
 .grid {
   display: grid;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }

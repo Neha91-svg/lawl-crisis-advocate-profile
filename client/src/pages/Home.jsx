@@ -26,16 +26,16 @@ function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section style={{ backgroundColor: 'var(--bg-card)', padding: '4rem 0', borderBottom: '1px solid var(--border-color)' }}>
+      <section style={{ backgroundColor: 'var(--bg-card)', padding: '6rem 0', borderBottom: '1px solid var(--border-color)' }}>
         <div className="container text-center">
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Find Trusted Advocates Near You</h1>
-          <p className="text-muted" style={{ fontSize: '1.25rem', maxWidth: '600px', margin: '0 auto' }}>
+          <h1 style={{ fontSize: '3rem', marginBottom: '1.5rem', letterSpacing: '-0.5px' }}>Find Trusted Advocates Near You</h1>
+          <p className="text-muted" style={{ fontSize: '1.25rem', maxWidth: '700px', margin: '0 auto', lineHeight: '1.8' }}>
             Connect with verified legal professionals. Instant access to crisis management, family law, corporate defense, and more.
           </p>
         </div>
       </section>
 
-      <main className="container" style={{ padding: '3rem 15px' }}>
+      <main className="container" style={{ padding: '5rem 15px' }}>
         
         {/* Filter Section */}
         <div className="d-flex flex-column align-items-center mb-4">
