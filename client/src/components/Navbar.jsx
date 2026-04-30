@@ -33,6 +33,13 @@ function Navbar() {
           <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
             <Link to="/advocates" className="nav-link">Find Advocate</Link>
             
+            {user && (
+              <>
+                <Link to="/my-consultations" className="nav-link">My Consultations</Link>
+                <Link to="/resources" className="nav-link">Resource Hub</Link>
+              </>
+            )}
+
             {isHome && (
               <>
                 <a href="#rights" className="nav-link">Know Your Rights</a>
