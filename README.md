@@ -1,5 +1,9 @@
 # **🏛️ AdvocateHub — Trust-Centric Advocate Profile Platform**
 
+### 🌐 Live Links
+- **Frontend**: [https://lawl-crisis-advocate-profile.vercel.app/](https://lawl-crisis-advocate-profile.vercel.app/)
+- **Backend API**: [https://lawl-crisis-advocate-profile.onrender.com](https://lawl-crisis-advocate-profile.onrender.com)
+
 AdvocateHub is a high-performance legal tech platform designed to bridge the gap between users in crisis and verified legal experts. Built with a focus on system resilience, inclusivity, and real-time decision support.
 
 🚀 What This Project Solves
