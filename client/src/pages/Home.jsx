@@ -38,7 +38,7 @@ function Home() {
       <main className="container" style={{ padding: '5rem 15px' }}>
         
         {/* Filter Section */}
-        <div className="d-flex flex-column align-items-center mb-4">
+        <section id="advocates" className="d-flex flex-column align-items-center mb-4 pt-4">
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Browse by Specialization</h2>
           <div className="d-flex gap-2" style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
             {specializations.map(spec => (
@@ -53,23 +53,24 @@ function Home() {
             ))}
           </div>
         </div>
+        </section>
 
-        {/* Advocate Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 mb-4">
+        {/* Advocate Horizontal Scroll */}
+        <div className="horizontal-scroll mb-4" style={{ padding: '1rem 0' }}>
           {filteredAdvocates.length > 0 ? (
             filteredAdvocates.map(adv => (
               <AdvocateCard key={adv.id} advocate={adv} />
             ))
           ) : (
-            <div className="text-center w-100 text-muted" style={{ gridColumn: '1 / -1', padding: '2rem' }}>
+            <div className="text-center w-100 text-muted" style={{ padding: '2rem' }}>
               No advocates found for this specialization.
             </div>
           )}
         </div>
 
-        {/* Top Categories */}
-        <section style={{ marginTop: '4rem' }}>
-          <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', textAlign: 'center' }}>Top Legal Categories</h2>
+        {/* Legal Tips / Top Categories */}
+        <section id="tips" style={{ marginTop: '4rem', paddingTop: '4rem' }}>
+          <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', textAlign: 'center' }}>Legal Tips & Top Categories</h2>
           <div className="grid md:grid-cols-3">
             {['Criminal Law', 'Property & Real Estate', 'Divorce & Family Law'].map((cat, idx) => (
               <div key={idx} className="card text-center" style={{ padding: '2rem 1rem' }}>
@@ -81,9 +82,9 @@ function Home() {
           </div>
         </section>
 
-        {/* Legal Articles / Case History */}
-        <section style={{ marginTop: '4rem', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', textAlign: 'center' }}>Recent Legal Articles & Case Histories</h2>
+        {/* Know Your Rights / Legal Articles */}
+        <section id="rights" style={{ marginTop: '4rem', marginBottom: '4rem', paddingTop: '4rem' }}>
+          <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', textAlign: 'center' }}>Know Your Rights & Recent Articles</h2>
           <div className="grid md:grid-cols-2">
             {[
               { title: 'Understanding Your Rights During Police Questioning', desc: 'A comprehensive guide on what to say and what to avoid when approached by law enforcement.' },

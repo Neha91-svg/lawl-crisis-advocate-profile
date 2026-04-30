@@ -31,7 +31,7 @@ function Navbar() {
             <input type="text" className="search-input" placeholder="Find Advocate..." />
           </div>
           
-          <Link to="/" className="nav-link">Find Lawyer</Link>
+          <a href="#advocates" className="nav-link">Find Advocate</a>
           <a href="#rights" className="nav-link">Know Your Rights</a>
           <a href="#tips" className="nav-link">Legal Tips</a>
 

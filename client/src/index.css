@@ -3,7 +3,7 @@
   --text-primary: #000000;
   --text-secondary: #333333;
   --text-light: #ffffff;
-  --bg-body: #f0f8ff;
+  --bg-body: #87CEEB; /* Sky Blue */
   --bg-card: #ffffff;
   --border-color: #dbe4f0;
   --border-light: #e6f2ff;
@@ -188,6 +188,7 @@ p {
 .align-items-center { align-items: center; }
 .gap-2 { gap: 0.5rem; }
 .gap-3 { gap: 1rem; }
+.gap-4 { gap: 1.5rem; }
 .flex-column { flex-direction: column; }
 .w-100 { width: 100%; }
 .mt-3 { margin-top: 1rem; }
@@ -195,6 +196,26 @@ p {
 .mb-4 { margin-bottom: 1.5rem; }
 .text-center { text-align: center; }
 .text-muted { color: var(--text-secondary) !important; }
+
+/* Horizontal Scroll */
+.horizontal-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 2rem;
+  padding-bottom: 1rem;
+  scrollbar-width: thin;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+.horizontal-scroll > div {
+  flex: 0 0 300px; /* Fixed width for cards in horizontal scroll */
+}
 
 /* Grid systems */
 .grid {
