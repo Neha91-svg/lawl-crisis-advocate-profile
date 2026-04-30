@@ -28,8 +28,14 @@ Integrated for real-time situational awareness:
 
 ✅ R3 — Backend Aggregation & NDJSON Streaming
 - Aggregation: Calls multiple APIs (DB + News + Map) in parallel using `Promise.allSettled`.
-- NDJSON Streaming: Profile content streams immediately while external data fetches in the background, preventing UI blocking.
+- Progressive Rendering Strategy: The core profile data is prioritized and rendered first, while external data (news, location) is fetched in parallel and displayed as it becomes available.
 - Caching: Implemented TTL-based caching (`node-cache`) to balance data freshness with API rate limits.
+-TTL Justification:
+- News data uses a shorter TTL due to frequent updates.
+- Location data uses a longer TTL as it is relatively stable.
+
+
+- The frontend makes exactly one API call per page load, ensuring simplified data flow and improved performance.
 
 ✅ R4 — Progressive Loading & Resilience
 - Approach: No full-page loaders; each section (Profile, News, Maps) renders independently using Skeleton Loaders.
@@ -42,7 +48,7 @@ Integrated for real-time situational awareness:
 
 🤖 Advanced AI & Accessibility (Beyond Requirements)
 
-1. AI Legal Risk Analyzer
+1. 🤖 AI-Powered Legal Guidance System
 - Logic: Rule-based keyword intelligence categorizes cases (Low/Medium/High) and suggests next steps.
 - Accessibility: Integrated Voice-to-Text Input (Web Speech API) for hands-free problem description.
 - Multi-Language Support: Auto-translation layer (Hindi/Global support) ensures inclusivity for non-English speakers.
@@ -52,13 +58,23 @@ Integrated for real-time situational awareness:
 - Resource Hub: A library of verified legal guides and crisis documentation checklists.
 
 🏗️ System Architecture
-User → React Frontend (with Streaming Reader)
-  ↓
-Express Backend (Aggregation Controller)
-  ↓
-Parallel Execution (Promise.allSettled) → [ MongoDB | News API | Overpass API ]
-  ↓
-Unified NDJSON Stream → Dynamic UI Updates
+
+User  
+↓  
+React Frontend  
+↓  
+Single API Call (/api/profile-full/:id)  
+↓  
+Express Backend (Aggregation Layer)  
+↓  
+Parallel Execution (Promise.allSettled)  
+→ MongoDB  
+→ News API  
+→ Overpass API  
+↓  
+Unified JSON Response  
+↓  
+Dynamic UI Rendering  
 
 🎨 Design Philosophy
 - Trust-First: High-contrast typography and a clean, authoritative color palette.
@@ -102,10 +118,13 @@ npm start
 npm run dev
 
 🏆 Why This Project Stands Out
-LexConnect demonstrates a deep understanding of production-grade system design. It prioritizes data resilience through streaming and aggregation, user accessibility through AI and voice, and architectural stability through partial failure handling. It is more than a profile platform—it is a mission-critical decision support system.
+LexConnect is not just a feature-complete application — it reflects real-world engineering decisions.
 
-Built with ❤️ and ☕ by a Senior Full-Stack Engineer.le backend
-AI assistance
+From handling unreliable external APIs to designing a trust-first UI without frameworks, every layer of the system is built with production constraints in mind.
+
+Combined with AI-assisted guidance and accessibility features, this platform moves beyond a static profile viewer and becomes a true decision-support system in high-stress scenarios.
+
+Built with ❤️ and ☕ by a Full-Stack Developer focused on backend systems and real-world problem solving.
 
 LexConnect becomes more than a profile viewer —
 it becomes a decision support system.
