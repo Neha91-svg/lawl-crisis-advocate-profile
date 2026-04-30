@@ -33,3 +33,21 @@ exports.getFullProfile = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+exports.getAllProfiles = async (req, res) => {
+  try {
+    const profiles = await Profile.find({});
+    res.json(profiles);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getBasicProfile = async (req, res) => {
+  try {
+    const advocate = await Profile.findOne();
+    res.json(advocate);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

@@ -1,121 +1,110 @@
-# Lawl Crisis Advocate Profile
+# LexConnect: Advocate Crisis Response Platform
 
-A high-performance, robust professional profile platform designed for immediate legal trust during crises. 
+A production-grade, high-performance MERN stack application designed to provide immediate, verified legal trust and resource mapping for individuals in crisis.
 
 ## 📖 Overview
 
-In high-stakes situations, finding a lawyer isn't the primary challenge—finding a verified, active, and trustworthy advocate instantly is. The **Crisis Advocate Profile** bridges this "trust gap" by aggregating real-time external data alongside verified credentials. 
-
-This platform serves as a command center for clients in need, providing instant proof of an advocate's recent activity, identifying contextual legal resources nearby, and offering a direct line of communication, all loaded progressively to ensure an uninterrupted experience.
+LexConnect bridges the "trust gap" in legal emergencies by providing a unified command center for advocate profiles. Unlike static professional pages, LexConnect aggregates real-time news and geographic resource mapping to prove an advocate's current engagement and local contextual presence.
 
 ---
 
-## ✨ Key Features & Implementations
+## 🚀 Key Features (Requirement Mapping)
 
-### 1. Premium Law Firm UI (Light Theme)
-- **What**: Completely overhauled the experimental dark mode into a pristine, professional "Law Firm Light" theme. 
-- **Why**: Professionalism in law starts with clarity. The light theme provides better readability and a more established, trustworthy aesthetic for legal consultation.
-- **How**: Utilized custom CSS variables and hand-written CSS (no frameworks) to create a high-contrast, clean layout with premium soft shadows and precise spacing.
+### [R1] Premium Professional Profile
+- **Implementation**: Fully hand-written Vanilla CSS layout (no Tailwind/Bootstrap).
+- **Details**: Displays verified credentials, specialized designations, work history timeline, and direct contact protocols.
+- **Responsiveness**: Precision media queries for **360px** (Mobile), **768px** (Tablet), and **1280px** (Desktop).
 
-### 2. Rich News & External Data Integration
-- **What**: Upgraded the News API integration to fetch high-resolution images, full descriptions, and source tags.
-- **Why**: To provide users with a "Live" feel. Seeing recent, relevant news articles with visual thumbnails builds immediate confidence in the advocate's active engagement in their field.
-- **How**: Refactored the backend service layer to map additional fields from the NewsAPI and created a dedicated responsive `news-grid` on the frontend.
+### [R2] Real-Time External Intelligence
+- **News API**: Dynamically fetches the latest legal developments related to the advocate's specialization to prove active engagement.
+- **Map API (Overpass/OpenStreetMap)**: Programmatically locates nearby resource centers (legal aid, courts) relative to the advocate's office.
+- **Dynamic Nature**: Data is never stale; it refreshes automatically based on global news cycles and geographic positioning.
 
-### 3. Professional Consultation Flow
-- **What**: Redesigned the consultation request form into a modern, grid-based layout with a dedicated success feedback state.
-- **Why**: Reducing friction is key during a crisis. A clean, organized form makes it easier for users to provide details, and a clear success state (with reference IDs) provides psychological closure.
-- **How**: Implemented a responsive form grid and a "Success State" component that generates a tracking reference ID and provides clear next-step instructions.
+### [R3] Node.js High-Performance Aggregation Layer
+- **Unified Payload**: The backend acts as a high-performance orchestrator, aggregating profile data and external API results into a single JSON response.
+- **Parallel Execution**: Uses `Promise.allSettled` to fetch external APIs concurrently, ensuring that a failure in one service (e.g., News API rate limit) does not block the delivery of core profile data.
+- **Network Efficiency**: The frontend performs exactly **one** API call per page, drastically reducing mobile data usage and latency.
 
-### 4. Interactive Geolocation & Resource Centers
-- **What**: Integrated Leaflet Maps with real-time data from the Overpass API to show nearby legal resource centers.
-- **Why**: Clients in a crisis often need immediate local resources. Showing nearby centers on a map relative to the advocate's office provides vital context.
-- **How**: Used `react-leaflet` for the map interface and custom API services to fetch and cache nearby data, ensuring fast loads even with complex geographic queries.
+### [R4] Progressive Hydration & Resiliency
+- **Skeleton UI**: Implemented non-blocking loading states. Users see the core profile layout immediately while heavier data streams fetch in the background.
+- **Graceful Degradation**: If an external service fails, LexConnect renders specific "Section Temporarily Unavailable" messages, maintaining a functional UI for all other data points.
 
-### 5. Secure JWT Authentication & MVC Architecture
-- **What**: Implemented a full user authentication system and refactored the backend into a clean MVC pattern.
-- **Why**: Security and scalability. Using JWTs ensures user data remains private, and the MVC structure allows for easy maintenance as the platform grows.
-- **How**: Created dedicated controllers for Auth and Profiles, and used `bcryptjs` for secure password storage.
-
-### 6. Performance & Security Optimizations
-- **Smart Caching**: Implemented `node-cache` with TTLs specific to data sensitivity (10m for news, 60m for map data) to reduce API overhead and latency.
-- **Resilient Parallelism**: Uses `Promise.allSettled` for concurrent API fetching. This ensures that even if a third-party service like NewsAPI is down, the core advocate profile still loads perfectly.
-- **Adaptive Rate Limiting**: Protects the consultation form from automated abuse with IP-based throttling and transparent "Retry-After" feedback.
-- **Progressive Hydration**: Integrated Skeleton UI components to maintain a high-perceived performance during data fetching.
+### [R5] Secure Consultation Gateway
+- **Validation**: Strict dual-layer validation (Client-side regex + Server-side length/format constraints).
+- **Data Integrity**: All requests are persisted in MongoDB with a unique, human-readable **Reference ID** (e.g., `REF-123456`).
+- **Security**: Enforces an IP-based rate limit of **3 requests per hour** to prevent automated spam and service abuse.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: React.js, React Router DOM, Vite, Custom Vanilla CSS, React-Leaflet
-- **Backend**: Node.js, Express.js, JSONWebToken, BcryptJS
-- **Database**: MongoDB (Mongoose)
-- **External Integrations**: NewsAPI, OpenStreetMap (Overpass API), Faker-JS
-- **Architecture**: RESTful MVC Architecture, In-Memory Caching
+| Layer | Technology |
+| :--- | :--- |
+| **Frontend** | React.js (Vite), Vanilla CSS (No Libraries), Leaflet.js |
+| **Backend** | Node.js, Express.js |
+| **Database** | MongoDB (Mongoose) |
+| **External APIs** | NewsAPI, OpenStreetMap (Overpass API), Faker-JS |
+| **Optimization** | Node-Cache (TTL-based), Promise.allSettled |
 
 ---
 
-## 💻 Getting Started
+## ⚙️ Architecture: The Aggregation Layer
 
-### Prerequisites
-- Node.js (v18+)
-- MongoDB connection string
-- NewsAPI Key
+LexConnect utilizes a **"Single-Call Architecture"**. When a profile is requested:
+1. The server fetches the primary profile from MongoDB.
+2. It extracts the `specialization` and `coordinates`.
+3. It spawns two parallel tasks:
+   - `fetchNews(specialization)`
+   - `fetchNearbyCenters(coordinates)`
+4. Using `Promise.allSettled`, it merges the results. If the Map API fails but News succeeds, the user still sees the News.
+5. A single unified object is sent to the frontend.
 
-### Installation
+---
 
-1. **Clone the repository:**
+## 💾 Caching Strategy (TTL)
+
+To ensure high performance and minimize API costs, LexConnect implements per-source TTL (Time-To-Live) caching:
+- **News API**: Cached for **10 minutes** (Balanced freshness for legal updates).
+- **Geographic Data**: Cached for **60 minutes** (Resources rarely change position).
+- **Mechanism**: Utilizes `node-cache` in the service layer to intercept repeated requests before they hit external endpoints.
+
+---
+
+## 🛠️ Setup & Installation
+
+1. **Clone & Install**:
    ```bash
    git clone <repo-url>
-   cd lawl-crisis-advocate-profile
+   cd crisis-advocate-profile
+   cd server && npm install
+   cd ../client && npm install
    ```
 
-2. **Setup the Server & Database:**
-   ```bash
-   cd server
-   npm install
-   ```
-   Create a `.env` file in the `server` directory:
+2. **Environment Variables (`/server/.env`)**:
    ```env
    PORT=5000
    MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_super_secret_key
+   JWT_SECRET=your_jwt_secret
    NEWS_API_KEY=your_news_api_key
    ```
-   *Optional: Seed the database with fake profiles to test the UI!*
+
+3. **Database Seeding**:
    ```bash
-   node seed.js
-   ```
-   Start the server:
-   ```bash
-   npm start
+   cd server && node seed.js
    ```
 
-3. **Setup the Client:**
-   ```bash
-   cd ../client
-   npm install
-   ```
-   Create a `.env` file in the `client` directory:
-   ```env
-   VITE_API_URL=http://localhost:5000
-   ```
-   Start the frontend:
-   ```bash
-   npm run dev
-   ```
-
-4. **View the Application:**
-   Open `http://localhost:5174` in your browser.
+4. **Run Development Mode**:
+   - Server: `cd server && npm start`
+   - Client: `cd client && npm run dev`
 
 ---
 
-## 🔮 Future Roadmap
+## 🔮 Future Improvements
 
-- **Persistent Caching**: Migrate from in-memory caching to **Redis** for distributed deployments.
-- **Real-Time Alerts**: Implement **Socket.io** to notify advocates instantly of high-priority requests.
-- **Document Management**: Allow secure, encrypted uploads of critical legal documents alongside consultation requests.
+- **Redis Integration**: Transition from in-memory caching to Redis for distributed horizontal scaling.
+- **Push Notifications**: Real-time advocate alerts for high-priority crisis consultations using Socket.io.
+- **Audit Logs**: Comprehensive logging of API failures and rate-limit triggers for administrative monitoring.
 
 ---
 
-*Designed and developed as a robust, crisis-ready solution for the modern legal environment.*
+*Designed and engineered for reliability, speed, and trust.*
