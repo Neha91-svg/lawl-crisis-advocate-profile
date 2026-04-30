@@ -17,8 +17,8 @@ function Home() {
 
   const specializations = ['All', 'Criminal Defense & Human Rights', 'Crisis Management & Legal Advocacy', 'Family Law & Civil Litigation', 'Corporate Crisis & Financial Law'];
 
-  const filteredAdvocates = filter === 'All' 
-    ? advocates 
+  const filteredAdvocates = filter === 'All'
+    ? advocates
     : advocates.filter(a => a.specialization === filter);
 
   if (loading) return <div className="container" style={{ padding: '4rem 0', textAlign: 'center' }}>Loading dashboard...</div>;
@@ -26,23 +26,41 @@ function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section style={{ backgroundColor: 'var(--bg-card)', padding: '6rem 0', borderBottom: '1px solid var(--border-color)' }}>
+      <section style={{
+        background: '#f9fafb',
+        padding: '3rem 0',   // 🔥 reduced from 6rem
+        borderBottom: '1px solid #e5e7eb'
+      }}>
         <div className="container text-center">
-          <h1 style={{ fontSize: '3rem', marginBottom: '1.5rem', letterSpacing: '-0.5px' }}>Find Trusted Advocates Near You</h1>
-          <p className="text-muted" style={{ fontSize: '1.25rem', maxWidth: '700px', margin: '0 auto', lineHeight: '1.8' }}>
-            Connect with verified legal professionals. Instant access to crisis management, family law, corporate defense, and more.
+          <h1 style={{
+            fontSize: '2rem',   // 🔥 reduced size
+            marginBottom: '0.8rem',
+            fontWeight: '600',
+            color: '#111827'
+          }}>
+            Find Trusted Advocates Near You
+          </h1>
+
+          <p style={{
+            fontSize: '0.95rem',  // 🔥 smaller text
+            maxWidth: '550px',
+            margin: '0 auto',
+            color: '#6b7280',
+            lineHeight: '1.6'
+          }}>
+            Connect with verified legal professionals for expert advice and consultation.
           </p>
         </div>
       </section>
-
+      
       <main className="container" style={{ padding: '5rem 15px' }}>
-        
+
         {/* Filter Section */}
         <section id="advocates" className="d-flex flex-column align-items-center mb-4 pt-4">
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Browse by Specialization</h2>
           <div className="d-flex gap-2" style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
             {specializations.map(spec => (
-              <button 
+              <button
                 key={spec}
                 className={`btn ${filter === spec ? 'btn-primary' : 'btn-outline'}`}
                 onClick={() => setFilter(spec)}

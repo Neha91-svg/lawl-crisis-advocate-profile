@@ -21,16 +21,17 @@ function Navbar() {
         <Link to="/" className="navbar-brand">
           LexConnect
         </Link>
-        
+
         <button className="navbar-toggle" onClick={toggleMenu} aria-label="Toggle navigation">
           ☰
         </button>
 
         <div className={`navbar-nav ${isOpen ? 'open' : ''}`}>
+
           <div className="search-bar">
             <input type="text" className="search-input" placeholder="Find Advocate..." />
           </div>
-          
+
           <a href="#advocates" className="nav-link">Find Advocate</a>
           <a href="#rights" className="nav-link">Know Your Rights</a>
           <a href="#tips" className="nav-link">Legal Tips</a>
@@ -38,8 +39,12 @@ function Navbar() {
           <div className="nav-buttons d-flex align-items-center gap-2">
             {user ? (
               <>
-                <span className="text-muted" style={{ marginRight: '10px' }}>Hi, {user.name}</span>
-                <button onClick={handleLogout} className="btn btn-outline">Logout</button>
+                <span style={{ fontSize: '0.85rem', color: '#6b7280' }}>
+                  Hi, {user.name}
+                </span>
+                <button onClick={handleLogout} className="btn btn-outline">
+                  Logout
+                </button>
               </>
             ) : (
               <>
@@ -48,6 +53,7 @@ function Navbar() {
               </>
             )}
           </div>
+
         </div>
       </div>
     </nav>
