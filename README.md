@@ -12,33 +12,30 @@ This platform serves as a command center for clients in need, providing instant 
 
 ## ✨ Key Features & Implementations
 
-### 1. Dynamic Routing & Scalable Directory
-- **What**: Transitioned from a crowded single-page layout to a dedicated `/advocates` routing flow. The dashboard highlights only top-featured advocates, while the full directory features real-time search and category filtering.
-- **Why**: As the platform scales to hundreds of advocates, a clean dashboard ensures users aren't overwhelmed, while the dedicated directory provides powerful tools to find exactly who they need.
+### 1. Premium Law Firm UI (Light Theme)
+- **What**: Completely overhauled the experimental dark mode into a pristine, professional "Law Firm Light" theme. 
+- **Why**: Professionalism in law starts with clarity. The light theme provides better readability and a more established, trustworthy aesthetic for legal consultation.
+- **How**: Utilized custom CSS variables and hand-written CSS (no frameworks) to create a high-contrast, clean layout with premium soft shadows and precise spacing.
 
-### 2. Secure JWT Authentication
-- **What**: Implemented a robust authentication flow using `bcryptjs` for password hashing and `jsonwebtoken` for secure session management. Features include registration, login, and protected API routes.
-- **Why**: Security is paramount in legal tech. Users need secure, authenticated sessions to manage sensitive consultation requests and personal data without fear of interception.
+### 2. Rich News & External Data Integration
+- **What**: Upgraded the News API integration to fetch high-resolution images, full descriptions, and source tags.
+- **Why**: To provide users with a "Live" feel. Seeing recent, relevant news articles with visual thumbnails builds immediate confidence in the advocate's active engagement in their field.
+- **How**: Refactored the backend service layer to map additional fields from the NewsAPI and created a dedicated responsive `news-grid` on the frontend.
 
-### 3. Dynamic MongoDB Data & Faker Seeding
-- **What**: Replaced static memory arrays with a strict Mongoose `Profile` schema. Integrated `@faker-js/faker` via a standalone `seed.js` script to instantly generate 25+ highly realistic advocate profiles.
-- **Why**: Hardcoded data doesn't reflect real-world scenarios. By seamlessly seeding the database with realistic data, we can accurately test frontend search, CSS grid scaling, and overall backend performance under a production-like load.
+### 3. Professional Consultation Flow
+- **What**: Redesigned the consultation request form into a modern, grid-based layout with a dedicated success feedback state.
+- **Why**: Reducing friction is key during a crisis. A clean, organized form makes it easier for users to provide details, and a clear success state (with reference IDs) provides psychological closure.
+- **How**: Implemented a responsive form grid and a "Success State" component that generates a tracking reference ID and provides clear next-step instructions.
 
-### 4. Parallel Processing & Resiliency
-- **What**: Upgraded the backend data aggregation to utilize `Promise.allSettled()` instead of sequential or strict parallel fetching. 
-- **Why**: Third-party APIs (like OpenStreetMap or News) can be unreliable. If a third-party service times out, `Promise.allSettled()` guarantees the core advocate profile still loads instantly, gracefully degrading the UI rather than crashing the server.
+### 4. Interactive Geolocation & Resource Centers
+- **What**: Integrated Leaflet Maps with real-time data from the Overpass API to show nearby legal resource centers.
+- **Why**: Clients in a crisis often need immediate local resources. Showing nearby centers on a map relative to the advocate's office provides vital context.
+- **How**: Used `react-leaflet` for the map interface and custom API services to fetch and cache nearby data, ensuring fast loads even with complex geographic queries.
 
-### 5. Strict Rate Limiting & API Defense
-- **What**: Fortified the `/api/consultation` endpoint with IP-based rate limiting (locked at 3 requests per hour). It intercepts abuse by returning a precise `429 Too Many Requests` JSON response equipped with a standard `Retry-After` HTTP header.
-- **Why**: To stop automated spam bots from flooding advocates' inboxes, while providing transparent, developer-friendly feedback to legitimate users who simply clicked too many times.
-
-### 6. High-Performance Caching
-- **What**: Implemented strict `node-cache` TTL rules tailored per-source (News data is cached for 10 minutes; Map data for 60 minutes).
-- **Why**: Drastically lowers third-party API costs, circumvents strict external rate limits (like Overpass API), and ensures lightning-fast load times for subsequent visitors.
-
-### 7. Progressive Loading & Skeleton UI
-- **What**: Heavier modules display sleek skeleton loaders while data fetches asynchronously. 
-- **Why**: Eliminates frustrating loading spinners and "waterfall" rendering. The UI remains fully interactive and responsive from millisecond one.
+### 5. Secure JWT Authentication & MVC Architecture
+- **What**: Implemented a full user authentication system and refactored the backend into a clean MVC pattern.
+- **Why**: Security and scalability. Using JWTs ensures user data remains private, and the MVC structure allows for easy maintenance as the platform grows.
+- **How**: Created dedicated controllers for Auth and Profiles, and used `bcryptjs` for secure password storage.
 
 ---
 
