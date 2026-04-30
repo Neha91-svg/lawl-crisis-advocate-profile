@@ -26,8 +26,8 @@ function Navbar() {
         {/* LEFT SIDE */}
         <div className="navbar-left">
           <Link to="/" className="navbar-brand">
-            <img src={logo} alt="AdvocateHub Logo" className="navbar-logo" />
-            <span>AdvocateHub</span>
+            <img src={logo} alt="LexConnect Logo" className="navbar-logo" />
+            <span>LexConnect</span>
           </Link>
 
           <div className={`navbar-links ${isOpen ? 'open' : ''}`}>

@@ -20,11 +20,11 @@ function AdvocateCard({ advocate }) {
       </div>
 
       <div className="card-body-main">
-        <span className="card-spec-tag">{advocate.specialization}</span>
         <h3 className="card-name-title">{advocate.name}</h3>
+        <span className="card-spec-tag">{advocate.specialization}</span>
         
         <div className="card-loc-item">
-          <span>📍</span>
+          <span aria-hidden="true">📍</span>
           <span>{advocate.location || 'Consultant'}</span>
         </div>
 
@@ -34,9 +34,10 @@ function AdvocateCard({ advocate }) {
               e.stopPropagation();
               navigate(`/advocates/${id}`);
             }} 
-            className="btn-card-primary"
+            className="btn btn-primary"
+            style={{ width: '100%' }}
           >
-            View Full Profile
+            View Profile
           </button>
           
           <button 
@@ -44,7 +45,8 @@ function AdvocateCard({ advocate }) {
               e.stopPropagation();
               navigate(`/advocates/${id}?book=true`);
             }} 
-            className="btn-card-outline"
+            className="btn btn-outline"
+            style={{ width: '100%' }}
           >
             Book Consultation
           </button>

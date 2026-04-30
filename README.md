@@ -1,10 +1,10 @@
-# **🏛️ AdvocateHub — Trust-Centric Advocate Profile Platform**
+# **🏛️ LexConnect — Trust-Centric Advocate Profile Platform**
 
 ### 🌐 Live Links
 - **Frontend**: [https://lawl-crisis-advocate-profile.vercel.app/](https://lawl-crisis-advocate-profile.vercel.app/)
 - **Backend API**: [https://lawl-crisis-advocate-profile.onrender.com](https://lawl-crisis-advocate-profile.onrender.com)
 
-AdvocateHub is a high-performance legal tech platform designed to bridge the gap between users in crisis and verified legal experts. Built with a focus on system resilience, inclusivity, and real-time decision support.
+LexConnect is a high-performance legal tech platform designed to bridge the gap between users in crisis and verified legal experts. Built with a focus on system resilience, inclusivity, and real-time decision support.
 
 🚀 What This Project Solves
 
@@ -13,7 +13,7 @@ In legal emergencies, users often:
 - Face language or accessibility barriers.
 - Lack real-time context on laws and nearby resources.
 
-AdvocateHub addresses this by combining a robust MERN backend with intelligent frontend features.
+LexConnect addresses this by combining a robust MERN backend with intelligent frontend features.
 
 🧠 Core Engineering Pillars
 
@@ -123,7 +123,7 @@ npm start
 npm run dev
 
 🏆 Why This Project Stands Out
-AdvocateHub is not just a feature-complete application — it reflects real-world engineering decisions.
+LexConnect is not just a feature-complete application — it reflects real-world engineering decisions.
 
 From handling unreliable external APIs to designing a trust-first UI without frameworks, every layer of the system is built with production constraints in mind.
 
@@ -131,5 +131,5 @@ Combined with AI-assisted guidance and accessibility features, this platform mov
 
 Built with ❤️ and ☕ by a Full-Stack Developer focused on backend systems and real-world problem solving.
 
-AdvocateHub becomes more than a profile viewer —
+LexConnect becomes more than a profile viewer —
 it becomes a decision support system.

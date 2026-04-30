@@ -56,12 +56,12 @@ function MyConsultations() {
   }
 
   return (
-    <div className="profile-page-wrapper">
-      <div className="profile-container" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
-        <header style={{ marginBottom: '3rem', textAlign: 'center' }}>
-          <h1 style={{ fontSize: '2.5rem', color: 'var(--primary)', marginBottom: '1rem' }}>My Consultations</h1>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
-            Track the status of your legal consultation requests and view your reference history.
+    <div className="profile-page-wrapper directory-page">
+      <div className="profile-container">
+        <header className="directory-header">
+          <h1 className="directory-title">My Consultations</h1>
+          <p className="directory-subtitle">
+            Track the status of your legal consultation requests and view your communication history with verified professionals.
           </p>
         </header>
 
@@ -70,7 +70,7 @@ function MyConsultations() {
             {consultations.map((consult) => (
               <div key={consult._id} className="profile-card consultation-card">
                 <div className="consult-header">
-                  <span className={`status-badge ${consult.status}`}>
+                  <span className={`status-badge ${consult.status.toLowerCase()}`}>
                     {consult.status}
                   </span>
                   <span className="consult-date">
@@ -79,32 +79,32 @@ function MyConsultations() {
                 </div>
                 
                 <h3 className="consult-name">{consult.name}</h3>
-                <p className="consult-issue">{consult.issue}</p>
+                <p className="consult-issue text-muted">{consult.issue}</p>
                 
                 <div className="consult-meta">
                   <div className="meta-item">
-                    <span>🕒</span>
+                    <span aria-hidden="true">🕒</span>
                     <span>{consult.timeSlot.charAt(0).toUpperCase() + consult.timeSlot.slice(1)} Session</span>
                   </div>
                   <div className="meta-item">
-                    <span>📞</span>
+                    <span aria-hidden="true">📞</span>
                     <span>{consult.phone}</span>
                   </div>
                 </div>
 
-                <div className="ref-box" style={{ margin: '1.5rem 0 0 0', padding: '0.75rem', textAlign: 'center' }}>
-                  <p style={{ fontSize: '0.75rem', marginBottom: '0.2rem', color: 'var(--text-dim)' }}>REFERENCE ID</p>
-                  <code style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--accent)' }}>{consult.referenceId}</code>
+                <div className="ref-box-container">
+                  <p className="ref-label">REFERENCE ID</p>
+                  <code className="ref-code">{consult.referenceId}</code>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="empty-state-wrapper">
-            <div className="empty-icon">📅</div>
-            <h2>No consultation requests yet</h2>
-            <p>You haven't booked any legal consultations. Our verified advocates are ready to help you with your legal needs.</p>
-            <button className="btn-card-primary" onClick={() => navigate('/advocates')} style={{ width: 'auto', padding: '0.8rem 2rem' }}>
+          <div className="error-fallback-card empty-state">
+            <div className="error-icon">📅</div>
+            <h3>No Consultations Found</h3>
+            <p>You haven't booked any legal consultations yet. Our verified advocates are ready to assist you.</p>
+            <button className="btn btn-primary mt-3" onClick={() => navigate('/advocates')}>
               Find an Advocate
             </button>
           </div>

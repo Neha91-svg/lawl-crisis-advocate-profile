@@ -47,54 +47,58 @@ function AdvocatesList() {
   }
 
   return (
-    <div className="profile-page-wrapper" style={{ paddingBottom: '4rem' }}>
-      <div className="profile-container" style={{ paddingTop: '4rem' }}>
-        <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', textAlign: 'center', color: 'var(--primary)' }}>Our Verified Advocates</h1>
-        <p style={{ marginBottom: '3rem', maxWidth: '700px', margin: '0 auto 3rem auto', textAlign: 'center', color: 'var(--text-secondary)' }}>
-          Browse our comprehensive directory of trusted legal professionals. Use the search and filters below to find the right advocate for your specific needs.
-        </p>
+    <div className="profile-page-wrapper directory-page">
+      <div className="profile-container">
+        
+        <header className="directory-header">
+          <h1 className="directory-title">Our Verified Advocates</h1>
+          <p className="directory-subtitle">
+            Browse our comprehensive directory of trusted legal professionals. Use the search and filters below to find the right advocate for your specific needs.
+          </p>
+        </header>
 
         {/* Search and Filter Section */}
-        <div className="profile-card" style={{ marginBottom: '3rem', padding: '1.5rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <label style={{ fontWeight: '600', fontSize: '0.9rem' }}>Search Professionals</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search by name or city..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <label style={{ fontWeight: '600', fontSize: '0.9rem' }}>Filter by Specialization</label>
-              <select
-                className="form-control"
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                style={{ cursor: 'pointer' }}
-              >
-                {specializations.map(spec => (
-                  <option key={spec} value={spec}>{spec}</option>
-                ))}
-              </select>
+        <section className="directory-filter-section">
+          <div className="profile-card filter-card">
+            <div className="filter-grid">
+              <div className="filter-group">
+                <label className="filter-label">Search Professionals</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search by name or city..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+              <div className="filter-group">
+                <label className="filter-label">Filter by Specialization</label>
+                <select
+                  className="form-control"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                >
+                  {specializations.map(spec => (
+                    <option key={spec} value={spec}>{spec}</option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Advocates Grid - Responsive & Equal Heights */}
+        {/* Advocates Grid */}
         <div className="advocates-grid">
           {filteredAdvocates.length > 0 ? (
             filteredAdvocates.map(adv => (
               <AdvocateCard key={adv._id || adv.id} advocate={adv} />
             ))
           ) : (
-            <div className="error-fallback-card" style={{ gridColumn: '1 / -1' }}>
+            <div className="error-fallback-card empty-state">
               <div className="error-icon">🔍</div>
               <h3>No Results Found</h3>
               <p>We couldn't find any advocates matching "{search}" in the "{filter}" category. Try clearing your filters or searching for a different name.</p>
-              <button className="btn-retry" onClick={() => { setSearch(''); setFilter('All'); }}>
+              <button className="btn btn-outline mt-3" onClick={() => { setSearch(''); setFilter('All'); }}>
                 Clear Filters
               </button>
             </div>

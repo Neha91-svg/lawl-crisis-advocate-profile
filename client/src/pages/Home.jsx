@@ -82,7 +82,7 @@ function Home() {
         <div className="horizontal-scroll mb-4" style={{ padding: '1rem 0' }}>
           {featuredAdvocates.length > 0 ? (
             featuredAdvocates.map(adv => (
-              <AdvocateCard key={adv.id} advocate={adv} />
+              <AdvocateCard key={adv._id || adv.id} advocate={adv} />
             ))
           ) : (
             <div className="text-center w-100 text-muted" style={{ padding: '2rem' }}>
@@ -97,31 +97,31 @@ function Home() {
         </div>
 
         {/* Legal Tips / Top Categories */}
-        <section id="tips" style={{ marginTop: '4rem', paddingTop: '4rem' }}>
-          <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', textAlign: 'center' }}>Legal Tips & Top Categories</h2>
+        <section id="tips" className="landing-section">
+          <h2 className="section-title text-center">Legal Tips & Top Categories</h2>
           <div className="grid md:grid-cols-3">
             {['Criminal Law', 'Property & Real Estate', 'Divorce & Family Law'].map((cat, idx) => (
-              <div key={idx} className="card text-center" style={{ padding: '2rem 1rem' }}>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>{cat}</h3>
-                <p className="text-muted" style={{ fontSize: '0.9rem' }}>Find experts specializing in {cat.toLowerCase()}.</p>
-                <button className="btn btn-secondary mt-3">Explore</button>
+              <div key={idx} className="card text-center">
+                <h3>{cat}</h3>
+                <p className="text-muted">Find experts specializing in {cat.toLowerCase()}.</p>
+                <button className="btn btn-outline btn-sm mt-3">Explore Category</button>
               </div>
             ))}
           </div>
         </section>
 
         {/* Know Your Rights / Legal Articles */}
-        <section id="rights" style={{ marginTop: '4rem', marginBottom: '4rem', paddingTop: '4rem' }}>
-          <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', textAlign: 'center' }}>Know Your Rights & Recent Articles</h2>
+        <section id="rights" className="landing-section">
+          <h2 className="section-title text-center">Know Your Rights & Recent Articles</h2>
           <div className="grid md:grid-cols-2">
             {[
               { title: 'Understanding Your Rights During Police Questioning', desc: 'A comprehensive guide on what to say and what to avoid when approached by law enforcement.' },
               { title: 'How to Navigate Property Disputes Without Court', desc: 'Mediation strategies that can save you years of litigation and significant legal fees.' }
             ].map((article, idx) => (
-              <div key={idx} className="card">
-                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>{article.title}</h3>
-                <p className="text-muted" style={{ fontSize: '0.9rem' }}>{article.desc}</p>
-                <a href="#" style={{ fontSize: '0.9rem', fontWeight: '500', display: 'inline-block', marginTop: '0.5rem' }}>Read Article →</a>
+              <div key={idx} className="card article-card">
+                <h3>{article.title}</h3>
+                <p className="text-muted">{article.desc}</p>
+                <a href="#" className="article-link">Read Article →</a>
               </div>
             ))}
           </div>

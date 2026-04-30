@@ -52,12 +52,12 @@ function ResourceHub() {
   }
 
   return (
-    <div className="profile-page-wrapper">
-      <div className="profile-container" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
-        <header style={{ marginBottom: '3rem', textAlign: 'center' }}>
-          <h1 style={{ fontSize: '2.5rem', color: 'var(--primary)', marginBottom: '1rem' }}>Resource Hub</h1>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
-            Access verified legal templates, crisis response guides, and professional documentation checklists.
+    <div className="profile-page-wrapper directory-page">
+      <div className="profile-container">
+        <header className="directory-header">
+          <h1 className="directory-title">Legal Resource Hub</h1>
+          <p className="directory-subtitle">
+            Access verified legal templates, crisis response guides, and professional documentation checklists curated by our experts.
           </p>
         </header>
 
@@ -65,24 +65,24 @@ function ResourceHub() {
           <div className="advocates-grid">
             {resources.map((res) => (
               <div key={res.id} className="profile-card resource-card">
-                <span className="card-spec-tag" style={{ background: 'var(--bg-subtle)', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
+                <span className="card-spec-tag">
                   {res.category}
                 </span>
-                <h3 style={{ margin: '0.75rem 0', fontSize: '1.2rem', color: 'var(--primary)' }}>{res.title}</h3>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.5rem', flex: 1 }}>
+                <h3>{res.title}</h3>
+                <p className="text-muted">
                   {res.description}
                 </p>
-                <a href={res.link} className="btn-card-outline" style={{ textDecoration: 'none' }}>
+                <a href={res.link} className="btn btn-outline w-100">
                   Access Resource
                 </a>
               </div>
             ))}
           </div>
         ) : (
-          <div className="empty-state-wrapper">
-            <div className="empty-icon">📚</div>
-            <h2>No resources available</h2>
-            <p>We are currently updating our resource library. Please check back later for new legal guides and templates.</p>
+          <div className="error-fallback-card empty-state">
+            <div className="error-icon">📚</div>
+            <h3>Resource Library Under Maintenance</h3>
+            <p>We are currently updating our resource library with the latest legal guides and templates. Please check back shortly.</p>
           </div>
         )}
       </div>

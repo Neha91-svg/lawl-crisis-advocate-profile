@@ -75,78 +75,99 @@ function ProfilePage() {
     <div className="profile-page-wrapper">
       {loadingProfile ? <SkeletonHero /> : <Hero profile={profile} />}
 
-      <main className="profile-container profile-main-grid">
+      <main className="profile-container">
         
-        {/* Sidebar Column */}
-        <div className="sidebar-column">
-          <Contact contact={profile?.contact} />
-          <Credentials credentials={profile?.credentials} />
-        </div>
+        {/* Professional Information Flow */}
+        <section className="profile-section-group">
+          <div className="profile-main-content">
+            
+            {/* Contact Information - High Priority */}
+            <div className="profile-contact-banner profile-card">
+              <h2 className="section-title">Professional Contact</h2>
+              <Contact contact={profile?.contact} />
+            </div>
 
-        {/* Main Column */}
-        <div className="main-column">
-          <Timeline events={profile?.timeline} />
+            {/* Credentials & Qualifications */}
+            <div className="profile-section profile-card">
+              <h2 className="section-title">Credentials & Expertise</h2>
+              <Credentials credentials={profile?.credentials} />
+            </div>
 
-          <section>
-            <h2 className="section-title">Latest Crisis News</h2>
-            <div className="news-grid">
-              {loadingNews ? (
-                [1, 2, 3].map(i => <SkeletonCard key={i} />)
-              ) : news ? (
-                news.map((item, index) => (
-                  <article key={index} className="news-card">
-                    {item.image && <img src={item.image} alt="" className="news-image" />}
-                    <div className="news-content">
-                      <span className="news-tag">{item.source}</span>
-                      <h3>{item.title}</h3>
-                      <p>{item.description}</p>
-                      <div className="news-footer">
-                        <span>{item.date}</span>
-                        <a href={item.url} target="_blank" rel="noopener noreferrer" className="news-link">
-                          Read Full Article →
-                        </a>
+            {/* Career Timeline */}
+            <div className="profile-section profile-card">
+              <h2 className="section-title">Career History & Experience</h2>
+              <Timeline events={profile?.timeline} />
+            </div>
+
+            {/* External Data & Resources - Lower Priority */}
+            <div className="profile-external-resources">
+              
+              <section className="profile-section profile-card">
+                <h2 className="section-title">Latest Legal Insights & News</h2>
+                <div className="news-grid">
+                  {loadingNews ? (
+                    [1, 2, 3].map(i => <SkeletonCard key={i} />)
+                  ) : news ? (
+                    news.map((item, index) => (
+                      <article key={index} className="news-card">
+                        {item.image && <img src={item.image} alt="" className="news-image" />}
+                        <div className="news-content">
+                          <span className="news-tag">{item.source}</span>
+                          <h3>{item.title}</h3>
+                          <p>{item.description}</p>
+                          <div className="news-footer">
+                            <span>{item.date}</span>
+                            <a href={item.url} target="_blank" rel="noopener noreferrer" className="news-link">
+                              Read Full Article →
+                            </a>
+                          </div>
+                        </div>
+                      </article>
+                    ))
+                  ) : (
+                    <ErrorMessage type="news" message="Could not load the latest news articles." />
+                  )}
+                </div>
+              </section>
+
+              <section className="profile-section profile-card">
+                <h2 className="section-title">Nearby Resource Centers</h2>
+                {!loadingCenters && centers && <LeafletMap centers={centers} userLocation={profile?.coordinates} />}
+                {loadingCenters && <SkeletonMap />}
+
+                <div className="news-grid mt-3">
+                  {loadingCenters ? (
+                    [1, 2].map(i => <SkeletonCard key={i} />)
+                  ) : centers ? (
+                    centers.map((center, index) => (
+                      <div key={index} className="center-card">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                          <h3>{center.name}</h3>
+                          <span className="rating-tag">⭐ {center.rating}</span>
+                        </div>
+                        <p>📍 {center.address}</p>
+                        <div style={{ marginTop: 'auto', paddingTop: '0.5rem' }}>
+                          <button className="news-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                            View Directions
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))
-              ) : (
-                <ErrorMessage type="news" message="Could not load the latest news articles." />
-              )}
+                    ))
+                  ) : (
+                    <ErrorMessage type="location" message="Could not locate nearby resource centers." />
+                  )}
+                </div>
+              </section>
+
             </div>
-          </section>
 
-          <section>
-            <h2 className="section-title">Nearby Resource Centers</h2>
-
-            {!loadingCenters && centers && <LeafletMap centers={centers} userLocation={profile?.coordinates} />}
-            {loadingCenters && <SkeletonMap />}
-
-            <div className="news-grid mt-3">
-              {loadingCenters ? (
-                [1, 2].map(i => <SkeletonCard key={i} />)
-              ) : centers ? (
-                centers.map((center, index) => (
-                  <div key={index} className="center-card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <h3>{center.name}</h3>
-                      <span className="rating-tag">⭐ {center.rating}</span>
-                    </div>
-                    <p>📍 {center.address}</p>
-                    <div style={{ marginTop: 'auto', paddingTop: '0.5rem' }}>
-                      <button className="news-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-                        View Directions
-                      </button>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <ErrorMessage type="location" message="Could not locate nearby resource centers." />
-              )}
+            {/* Consultation Form */}
+            <div className="profile-section profile-card" id="book">
+              <ContactForm />
             </div>
-          </section>
 
-          <ContactForm />
-        </div>
+          </div>
+        </section>
       </main>
 
       <footer style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-muted)' }}>

@@ -26,10 +26,10 @@ function Login() {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
-      <div className="card" style={{ maxWidth: '400px', width: '100%', padding: '2rem' }}>
-        <h2 className="text-center" style={{ marginBottom: '1.5rem' }}>Login</h2>
-        {error && <div style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
+    <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: '80vh', padding: '2rem 0' }}>
+      <div className="card auth-card">
+        <h2 className="text-center auth-title">Login to LexConnect</h2>
+        {error && <div className="error-message-box">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label">Email Address</label>
@@ -39,6 +39,7 @@ function Login() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="name@company.com"
             />
           </div>
           <div className="form-group mb-4">
@@ -49,13 +50,14 @@ function Login() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
             />
           </div>
           <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Logging in...' : 'Sign In'}
           </button>
         </form>
-        <p className="text-center mt-3">
+        <p className="text-center mt-3 auth-footer">
           Don't have an account? <Link to="/signup">Sign up here</Link>
         </p>
       </div>
