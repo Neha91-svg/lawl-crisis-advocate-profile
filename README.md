@@ -108,6 +108,7 @@ cd client && npm install
 In the /server directory:
 PORT=5000
 MONGO_URI=your_mongodb_uri
+VITE_API_URL=https://lawl-crisis-advocate-profile.onrender.com
 NEWS_API_KEY=your_news_api_key
 JWT_SECRET=your_secret_key
 
