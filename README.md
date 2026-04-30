@@ -10,61 +10,45 @@ This platform serves as a command center for clients in need, providing instant 
 
 ---
 
-## ✨ Key Features
+## ✨ Key Features & Implementations
 
-### 1. Unified Professional Profile
-- **Purpose**: Acts as the central hub for an advocate's verifiable information.
-- **Details**: Built with React and a custom dark-themed CSS system for a serious, "trust-first" aesthetic. Avoids heavy styling frameworks to prioritize speed and complete design control.
+### 1. Dynamic Routing & Scalable Directory
+- **What**: Transitioned from a crowded single-page layout to a dedicated `/advocates` routing flow. The dashboard highlights only top-featured advocates, while the full directory features real-time search and category filtering.
+- **Why**: As the platform scales to hundreds of advocates, a clean dashboard ensures users aren't overwhelmed, while the dedicated directory provides powerful tools to find exactly who they need.
 
-### 2. Live Data Aggregation
-- **Purpose**: Proves the advocate is actively practicing and provides contextual information.
-- **Details**: Instead of static databases, the backend dynamically fetches:
-  - **News API**: Displays the latest news related to the advocate's field to prove current engagement.
-  - **OpenStreetMap (Overpass API)**: Locates nearby legal offices and resources based on the user's crisis location, ensuring privacy by avoiding proprietary ad-network mapping services.
+### 2. Secure JWT Authentication
+- **What**: Implemented a robust authentication flow using `bcryptjs` for password hashing and `jsonwebtoken` for secure session management. Features include registration, login, and protected API routes.
+- **Why**: Security is paramount in legal tech. Users need secure, authenticated sessions to manage sensitive consultation requests and personal data without fear of interception.
 
-### 3. Interactive Geolocation (Leaflet Integration)
-- **Purpose**: Provides visual context for nearby legal centers.
-- **Details**: Utilizes Leaflet, a lightweight open-source mapping library. This removes the need for costly proprietary API keys and guarantees that user location data remains private.
+### 3. Dynamic MongoDB Data & Faker Seeding
+- **What**: Replaced static memory arrays with a strict Mongoose `Profile` schema. Integrated `@faker-js/faker` via a standalone `seed.js` script to instantly generate 25+ highly realistic advocate profiles.
+- **Why**: Hardcoded data doesn't reflect real-world scenarios. By seamlessly seeding the database with realistic data, we can accurately test frontend search, CSS grid scaling, and overall backend performance under a production-like load.
 
-### 4. High-Performance API & Caching
-- **Purpose**: Ensures the page loads instantly, even on slow connections.
-- **Details**:
-  - **Parallel Fetching**: Uses `Promise.all` to fetch multiple external APIs simultaneously, reducing total request time.
-  - **Smart In-Memory Caching**: News data is cached for 10 minutes, and geographic data for 1 hour. This drastically lowers API costs and ensures lightning-fast load times for subsequent visitors.
+### 4. Parallel Processing & Resiliency
+- **What**: Upgraded the backend data aggregation to utilize `Promise.allSettled()` instead of sequential or strict parallel fetching. 
+- **Why**: Third-party APIs (like OpenStreetMap or News) can be unreliable. If a third-party service times out, `Promise.allSettled()` guarantees the core advocate profile still loads instantly, gracefully degrading the UI rather than crashing the server.
 
-### 5. Progressive Loading & Skeleton UI
-- **Purpose**: Eliminates frustrating loading spinners and "waterfall" rendering.
-- **Details**: Core profile data loads immediately, while heavier modules (like maps and news) display sleek skeleton loaders. The UI remains fully interactive even if external APIs take longer to resolve.
+### 5. Strict Rate Limiting & API Defense
+- **What**: Fortified the `/api/consultation` endpoint with IP-based rate limiting (locked at 3 requests per hour). It intercepts abuse by returning a precise `429 Too Many Requests` JSON response equipped with a standard `Retry-After` HTTP header.
+- **Why**: To stop automated spam bots from flooding advocates' inboxes, while providing transparent, developer-friendly feedback to legitimate users who simply clicked too many times.
 
-### 6. Resilient Failure Handling
-- **Purpose**: Guarantees the platform never breaks due to third-party outages.
-- **Details**: If an external API (like News or Maps) goes down or rate-limits the server, the system gracefully degrades. It displays a clean "Data Temporarily Unavailable" message for that specific section while keeping the rest of the profile fully operational.
+### 6. High-Performance Caching
+- **What**: Implemented strict `node-cache` TTL rules tailored per-source (News data is cached for 10 minutes; Map data for 60 minutes).
+- **Why**: Drastically lowers third-party API costs, circumvents strict external rate limits (like Overpass API), and ensures lightning-fast load times for subsequent visitors.
 
-### 7. Secure Consult Request System
-- **Purpose**: Provides a direct, reliable communication line.
-- **Details**: A highly validated submission form limits input to concise descriptions, preventing spam. Each successful submission generates a unique `REF-XXXXXX` tracking ID, providing psychological assurance to the user that their request has been logged.
-
-### 8. Built-in Security & Rate Limiting
-- **Purpose**: Protects the platform from automated spam and abuse.
-- **Details**: Enforces strict IP-based rate limiting (e.g., 3 consult requests per hour) directly at the Express middleware layer.
+### 7. Progressive Loading & Skeleton UI
+- **What**: Heavier modules display sleek skeleton loaders while data fetches asynchronously. 
+- **Why**: Eliminates frustrating loading spinners and "waterfall" rendering. The UI remains fully interactive and responsive from millisecond one.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: React.js, Vite, Custom Vanilla CSS, React-Leaflet
-- **Backend**: Node.js, Express.js
+- **Frontend**: React.js, React Router DOM, Vite, Custom Vanilla CSS, React-Leaflet
+- **Backend**: Node.js, Express.js, JSONWebToken, BcryptJS
 - **Database**: MongoDB (Mongoose)
-- **External Integrations**: NewsAPI, OpenStreetMap (Overpass API)
-- **Architecture**: RESTful API, In-Memory Caching
-
----
-
-## 🚀 System Architecture & Design Philosophy
-
-1. **Aggregation over Redundancy**: Avoids storing duplicate data by fetching truth directly from reliable external sources.
-2. **The "One Shot" Frontend**: The backend aggregates all necessary profile data into a single, unified JSON response at the `/api/profile` endpoint, simplifying frontend logic and reducing network requests.
-3. **Graceful Degradation**: Built under the assumption that external dependencies *will* fail. Partial failures are treated as UI states, not system crashes.
+- **External Integrations**: NewsAPI, OpenStreetMap (Overpass API), Faker-JS
+- **Architecture**: RESTful MVC Architecture, In-Memory Caching
 
 ---
 
@@ -83,7 +67,7 @@ This platform serves as a command center for clients in need, providing instant 
    cd lawl-crisis-advocate-profile
    ```
 
-2. **Setup the Server:**
+2. **Setup the Server & Database:**
    ```bash
    cd server
    npm install
@@ -92,7 +76,12 @@ This platform serves as a command center for clients in need, providing instant 
    ```env
    PORT=5000
    MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_super_secret_key
    NEWS_API_KEY=your_news_api_key
+   ```
+   *Optional: Seed the database with fake profiles to test the UI!*
+   ```bash
+   node seed.js
    ```
    Start the server:
    ```bash
@@ -114,7 +103,7 @@ This platform serves as a command center for clients in need, providing instant 
    ```
 
 4. **View the Application:**
-   Open `http://localhost:5173` in your browser.
+   Open `http://localhost:5174` in your browser.
 
 ---
 
