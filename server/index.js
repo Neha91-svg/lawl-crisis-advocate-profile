@@ -38,39 +38,6 @@ app.get('/api/test', (req, res) => {
   });
 });
 
-app.get('/api/profile', async (req, res) => {
-  try {
-    // Basic profile data
-    const basicProfile = {
-      name: 'Advocate Neha',
-      specialization: 'Crisis Management & Legal Advocacy',
-      experience: '8+ Years',
-      location: 'New Delhi, India',
-      status: 'active'
-    };
-
-    // Fetch external data in parallel
-    const [news, centers] = await Promise.all([
-      fetchCrisisNews().catch(err => {
-        console.error('Parallel News Fetch Error:', err.message);
-        return null; // Return null on failure as requested
-      }),
-      fetchNearbyCenters(28.6139, 77.2090).catch(err => {
-        console.error('Parallel Centers Fetch Error:', err.message);
-        return null; // Return null on failure as requested
-      })
-    ]);
-
-    // Unified response
-    res.json({
-      ...basicProfile,
-      recentNews: news,
-      nearbyCenters: centers
-    });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to assemble profile data' });
-  }
-});
 
 app.get('/api/profiles', (req, res) => {
   res.json(advocates);
@@ -83,15 +50,20 @@ app.get('/api/profile/:id', async (req, res) => {
   }
 
   try {
-    // Parallel Fetching: Profile details and News
-    const [news] = await Promise.all([
+    const [lat, lng] = advocate.coordinates || [28.6139, 77.2090];
+    // Parallel Fetching: Profile details, News, and Centers
+    const [news, centers] = await Promise.all([
       fetchCrisisNews().catch(err => {
         console.error('News fetch error:', err.message);
+        return null;
+      }),
+      fetchNearbyCenters(lat, lng).catch(err => {
+        console.error('Centers fetch error:', err.message);
         return null;
       })
     ]);
 
-    res.json({ ...advocate, news });
+    res.json({ ...advocate, recentNews: news, nearbyCenters: centers });
   } catch (error) {
     console.error('Unified Profile API Error:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });

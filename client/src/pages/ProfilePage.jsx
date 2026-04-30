@@ -26,22 +26,19 @@ function ProfilePage() {
     axios.get(`${apiUrl}/api/profile/${id}`)
       .then(res => {
         setProfile(res.data)
-        setNews(res.data.news)
+        setNews(res.data.recentNews)
+        setCenters(res.data.nearbyCenters)
         setLoadingProfile(false)
         setLoadingNews(false)
-
-        // Fetch Nearby Centers based on advocate's location
-        const [lat, lng] = res.data.coordinates || [28.6139, 77.2090]
-        return axios.get(`${apiUrl}/api/nearby-centers`, { params: { lat, lng } })
+        setLoadingCenters(false)
       })
-      .then(res => setCenters(res.data))
       .catch(err => {
         console.error(err)
         setLoadingProfile(false)
         setLoadingNews(false)
+        setLoadingCenters(false)
         setCenters(null)
       })
-      .finally(() => setLoadingCenters(false))
 
   }, [id])
 
