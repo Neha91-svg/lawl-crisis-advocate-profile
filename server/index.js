@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const { fetchCrisisNews, fetchNearbyCenters } = require('./services/externalApi');
 const Consultation = require('./models/Consultation');
 const advocates = require('./data/advocates');
+const authRoutes = require('./routes/auth');
 require('dotenv').config();
 
 const app = express();
@@ -12,6 +13,9 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+
+// Routes
+app.use('/api/auth', authRoutes);
 
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/crisis_advocate';
