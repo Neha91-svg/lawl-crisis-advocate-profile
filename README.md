@@ -37,6 +37,12 @@ This platform serves as a command center for clients in need, providing instant 
 - **Why**: Security and scalability. Using JWTs ensures user data remains private, and the MVC structure allows for easy maintenance as the platform grows.
 - **How**: Created dedicated controllers for Auth and Profiles, and used `bcryptjs` for secure password storage.
 
+### 6. Performance & Security Optimizations
+- **Smart Caching**: Implemented `node-cache` with TTLs specific to data sensitivity (10m for news, 60m for map data) to reduce API overhead and latency.
+- **Resilient Parallelism**: Uses `Promise.allSettled` for concurrent API fetching. This ensures that even if a third-party service like NewsAPI is down, the core advocate profile still loads perfectly.
+- **Adaptive Rate Limiting**: Protects the consultation form from automated abuse with IP-based throttling and transparent "Retry-After" feedback.
+- **Progressive Hydration**: Integrated Skeleton UI components to maintain a high-perceived performance during data fetching.
+
 ---
 
 ## 🛠️ Technology Stack

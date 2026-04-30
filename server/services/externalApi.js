@@ -37,9 +37,11 @@ const fetchCrisisNews = async (specialization = 'legal crisis OR advocacy') => {
     });
     const articles = response.data.articles.slice(0, 5).map(article => ({
       title: article.title,
-      source: article.source.name, // Flattening the {id, name} object
+      description: article.description,
+      source: article.source.name,
       date: article.publishedAt.split('T')[0],
-      url: article.url
+      url: article.url,
+      image: article.urlToImage
     }));
     apiCache.set(cacheKey, articles, TTL.NEWS);
     return articles;
@@ -70,7 +72,10 @@ const fetchNearbyCenters = async (lat, lng) => {
     // Overpass API query for lawyers/offices around coordinates
     const query = `[out:json];node["office"="lawyer"](around:5000,${lat},${lng});out body;`;
     const response = await axios.get(`https://overpass-api.de/api/interpreter`, {
-      params: { data: query }
+      params: { data: query },
+      headers: {
+        'User-Agent': 'CrisisAdvocateProfile/1.0'
+      }
     });
 
     const results = response.data.elements.map(el => ({

@@ -60,16 +60,25 @@ function ProfilePage() {
 
           <section>
             <h2 className="section-title">Latest Crisis News</h2>
-            <div className="credentials-grid">
+            <div className="news-grid">
               {loadingNews ? (
                 [1, 2, 3].map(i => <SkeletonCard key={i} />)
               ) : news ? (
                 news.map((item, index) => (
-                  <div key={index} className="card">
-                    <h3>{item.title}</h3>
-                    <p><strong>Source:</strong> {item.source}</p>
-                    <p>{item.date}</p>
-                  </div>
+                  <article key={index} className="news-card">
+                    {item.image && <img src={item.image} alt="" className="news-image" />}
+                    <div className="news-content">
+                      <span className="news-tag">{item.source}</span>
+                      <h3>{item.title}</h3>
+                      <p>{item.description}</p>
+                      <div className="news-footer">
+                        <span>{item.date}</span>
+                        <a href={item.url} target="_blank" rel="noopener noreferrer" className="news-link">
+                          Read Full Article →
+                        </a>
+                      </div>
+                    </div>
+                  </article>
                 ))
               ) : (
                 <ErrorMessage type="news" message="Could not load the latest news articles." />
@@ -83,15 +92,22 @@ function ProfilePage() {
             {!loadingCenters && centers && <LeafletMap centers={centers} userLocation={profile?.coordinates} />}
             {loadingCenters && <SkeletonMap />}
 
-            <div className="credentials-grid mt-3">
+            <div className="news-grid mt-3">
               {loadingCenters ? (
                 [1, 2].map(i => <SkeletonCard key={i} />)
               ) : centers ? (
                 centers.map((center, index) => (
-                  <div key={index} className="card">
-                    <h3>{center.name}</h3>
-                    <p>{center.address}</p>
-                    <p>Rating: {center.rating} ⭐</p>
+                  <div key={index} className="center-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <h3>{center.name}</h3>
+                      <span className="rating-tag">⭐ {center.rating}</span>
+                    </div>
+                    <p>📍 {center.address}</p>
+                    <div style={{ marginTop: 'auto', paddingTop: '0.5rem' }}>
+                      <button className="news-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                        View Directions
+                      </button>
+                    </div>
                   </div>
                 ))
               ) : (
