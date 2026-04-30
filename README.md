@@ -34,15 +34,28 @@ LexConnect isn't just another directory of profiles; it’s a mission-critical p
 
 ---
 
-## 🤖 The "Plus One": AI Legal Risk Analyzer
+## 🤖 The "Plus One": Premium Features
 
-Beyond the requirements, I built an **AI-powered assistant** to solve the "I don't know if I need a lawyer" problem.
+Beyond the core requirements, I implemented several advanced features to transform the platform into a comprehensive legal ecosystem.
 
-### Features:
-- **Intelligent Risk Scoring:** Uses rule-based keyword intelligence to analyze user queries and categorize risk (Low/Medium/High).
-- **Voice Input (Accessibility):** Integrated the **Web Speech API** allowing users in crisis to describe their situation hands-free.
-- **Multi-Language Support:** Integrated a translation layer that detects and translates inputs (e.g., Hindi) to English before analysis, ensuring inclusivity.
-- **Automated Routing:** Suggests the specific specialization needed and provides a direct link to filtered advocates.
+### 🔍 1. Dynamic Directory Search & Filtering
+*   **Why?** Users need to find specific advocates quickly without page reloads.
+*   **How?** Implemented a normalized, case-insensitive search engine on the frontend that filters across multiple fields (Name, Location, Specialization) in real-time using optimized array methods.
+
+### 📅 2. Personalized Consultation Dashboard
+*   **Why?** Users need a way to track their legal journey and reference IDs.
+*   **How?** Developed a private dashboard that fetches the user's specific history from MongoDB. It features professional "Empty States" with CTAs to guide users when no data is present.
+
+### ⚖️ 3. AI Legal Risk Analyzer (with Voice & Multi-lang)
+*   **Why?** Lowering the barrier to legal entry for non-technical or non-English speaking users.
+*   **How?**
+    *   **Intelligence:** Rule-based keyword matching for instant risk scoring (Low/Medium/High).
+    *   **Accessibility:** Integrated **Web Speech API** for hands-free descriptions.
+    *   **Inclusivity:** Added a translation layer using `translate-google-api` to process inputs in Hindi or other languages before analysis.
+
+### 📚 4. Legal Resource Hub
+*   **Why?** Providing immediate value through education before a user commits to a consultation.
+*   **How?** A categorized library of verified legal guides and crisis documentation, built with a responsive card layout and skeleton loading states.
 
 ---
 
