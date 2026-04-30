@@ -53,7 +53,7 @@ app.get('/api/profile/:id', async (req, res) => {
     const [lat, lng] = advocate.coordinates || [28.6139, 77.2090];
     // Parallel Fetching: Profile details, News, and Centers
     const [news, centers] = await Promise.all([
-      fetchCrisisNews().catch(err => {
+      fetchCrisisNews(advocate.specialization).catch(err => {
         console.error('News fetch error:', err.message);
         return null;
       }),
@@ -77,7 +77,7 @@ app.get('/api/profile/basic', (req, res) => {
 
 app.get('/api/news', async (req, res) => {
   try {
-    const news = await fetchCrisisNews();
+    const news = await fetchCrisisNews(req.query.specialization);
     res.json(news);
   } catch (error) {
     res.status(500).json({ error: error.message });

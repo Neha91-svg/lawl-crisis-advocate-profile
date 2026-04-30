@@ -2,11 +2,12 @@ const axios = require('axios');
 const { apiCache, CACHE_KEYS, TTL } = require('./cache');
 
 
-const fetchCrisisNews = async () => {
+const fetchCrisisNews = async (specialization = 'legal crisis OR advocacy') => {
+  const cacheKey = `${CACHE_KEYS.NEWS}_${specialization.replace(/[^a-zA-Z0-9]/g, '_')}`;
   // Check Cache first
-  const cachedNews = apiCache.get(CACHE_KEYS.NEWS);
+  const cachedNews = apiCache.get(cacheKey);
   if (cachedNews) {
-    console.log('Returning cached News data');
+    console.log(`Returning cached News data for ${specialization}`);
     return cachedNews;
   }
 
@@ -15,17 +16,17 @@ const fetchCrisisNews = async () => {
   if (!apiKey) {
     console.warn('NEWS_API_KEY is missing. Returning mock data.');
     const mockNews = [
-      { title: 'Global Crisis Advocacy on the Rise', source: 'Advocacy Weekly', date: '2024-04-25' },
-      { title: 'New Legal Frameworks for Emergency Response', source: 'Legal Times', date: '2024-04-26' }
+      { title: `Global ${specialization} Advocacy on the Rise`, source: 'Advocacy Weekly', date: '2024-04-25' },
+      { title: `New Legal Frameworks for ${specialization}`, source: 'Legal Times', date: '2024-04-26' }
     ];
-    apiCache.set(CACHE_KEYS.NEWS, mockNews, TTL.NEWS);
+    apiCache.set(cacheKey, mockNews, TTL.NEWS);
     return mockNews;
   }
 
   try {
     const response = await axios.get(`https://newsapi.org/v2/everything`, {
       params: {
-        q: 'legal crisis OR advocacy OR law',
+        q: `${specialization} OR law OR legal`,
         sortBy: 'publishedAt',
         language: 'en',
         apiKey: apiKey
@@ -40,7 +41,7 @@ const fetchCrisisNews = async () => {
       date: article.publishedAt.split('T')[0],
       url: article.url
     }));
-    apiCache.set(CACHE_KEYS.NEWS, articles, TTL.NEWS);
+    apiCache.set(cacheKey, articles, TTL.NEWS);
     return articles;
   } catch (error) {
     console.error('Error fetching News API:', error.message);
