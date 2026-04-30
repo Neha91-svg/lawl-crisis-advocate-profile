@@ -1,4 +1,4 @@
-🏛️ LexConnect — Trust-Centric Advocate Profile Platform
+# **🏛️ LexConnect — Trust-Centric Advocate Profile Platform**
 
 LexConnect is a high-performance legal tech platform designed to bridge the gap between users in crisis and verified legal experts. Built with a focus on system resilience, inclusivity, and real-time decision support.
 
