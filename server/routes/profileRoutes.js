@@ -4,6 +4,7 @@ const rateLimit = require('express-rate-limit');
 
 const { getFullProfile, getAllProfiles, getBasicProfile } = require('../controllers/profileController');
 const { createConsultation, getUserConsultations } = require('../controllers/consultationController');
+const { analyzeLegalRisk } = require('../controllers/riskController');
 const { protect } = require('../middleware/authMiddleware');
 
 // Rate Limiter for Consultation (R5: max 3 per hour per IP)
@@ -35,5 +36,8 @@ router.post('/consultation', consultationLimiter, (req, res, next) => {
 
 // Private History Flow
 router.get('/consultations', protect, getUserConsultations);
+
+// AI Legal Risk Analyzer Flow
+router.post('/analyze-risk', analyzeLegalRisk);
 
 module.exports = router;

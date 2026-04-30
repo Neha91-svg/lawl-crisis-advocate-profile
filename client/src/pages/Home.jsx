@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdvocateCard from '../components/AdvocateCard';
+import LegalRiskAnalyzer from '../components/LegalRiskAnalyzer';
 
 function Home() {
   const [advocates, setAdvocates] = useState([]);
@@ -54,6 +55,9 @@ function Home() {
           </p>
         </div>
       </section>
+
+      {/* AI Risk Analyzer Feature (New) */}
+      <LegalRiskAnalyzer />
       
       <main className="container" style={{ padding: '5rem 15px' }}>
 
