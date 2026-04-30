@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 //contact form component
 function ContactForm() {
@@ -40,18 +41,25 @@ function ContactForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
-    if (Object.keys(validationErrors).length === 0) {
-      try {
-        const apiUrl = import.meta.env.VITE_API_URL || '';
-        const response = await axios.post(`${apiUrl}/api/consultation`, formData);
-        setRefId(response.data.referenceId);
-        setSubmitted(true);
-        setErrors({});
-      } catch (err) {
-        setErrors({ submit: 'Failed to send request. Please try again later.' });
-      }
-    } else {
+
+    if (Object.keys(validationErrors).length !== 0) {
       setErrors(validationErrors);
+      return;
+    }
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const response = await axios.post(`${apiUrl}/api/consultation`, formData);
+
+      setRefId(response.data.referenceId);
+      setSubmitted(true);
+      setErrors({});
+    } catch (err) {
+      if (err.response?.status === 429) {
+        setErrors({ submit: 'Too many requests. Try again later.' });
+      } else {
+        setErrors({ submit: 'Server error. Please try again.' });
+      }
     }
   };
 

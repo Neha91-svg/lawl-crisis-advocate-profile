@@ -19,9 +19,14 @@ function AdvocatesList() {
   const specializations = ['All', 'Criminal Defense & Human Rights', 'Crisis Management & Legal Advocacy', 'Family Law & Civil Litigation', 'Corporate Crisis & Financial Law'];
 
   const filteredAdvocates = advocates.filter(adv => {
+    const name = adv.name || '';
+    const location = adv.location || '';
+
     const matchesFilter = filter === 'All' || adv.specialization === filter;
-    const matchesSearch = adv.name.toLowerCase().includes(search.toLowerCase()) || 
-                          adv.location.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch =
+      name.toLowerCase().includes(search.toLowerCase()) ||
+      location.toLowerCase().includes(search.toLowerCase());
+
     return matchesFilter && matchesSearch;
   });
 
@@ -40,18 +45,18 @@ function AdvocatesList() {
       <div className="card mb-4" style={{ padding: '1.5rem' }}>
         <div className="grid md:grid-cols-2" style={{ gap: '1rem' }}>
           <div>
-            <input 
-              type="text" 
-              className="form-control" 
-              placeholder="Search by name or location..." 
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by name or location..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
           <div>
-            <select 
-              className="form-control" 
-              value={filter} 
+            <select
+              className="form-control"
+              value={filter}
               onChange={(e) => setFilter(e.target.value)}
               style={{ cursor: 'pointer' }}
             >
@@ -67,8 +72,7 @@ function AdvocatesList() {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filteredAdvocates.length > 0 ? (
           filteredAdvocates.map(adv => (
-            <AdvocateCard key={adv.id} advocate={adv} />
-          ))
+            <AdvocateCard key={adv._id || adv.id} advocate={adv} />))
         ) : (
           <div className="text-center w-100 text-muted" style={{ gridColumn: '1 / -1', padding: '3rem' }}>
             No advocates found matching your search criteria.

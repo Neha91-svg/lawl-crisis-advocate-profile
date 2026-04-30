@@ -20,57 +20,34 @@ function ProfilePage() {
   const [loadingCenters, setLoadingCenters] = useState(true)
 
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL || ''
+    const apiUrl = import.meta.env.VITE_API_URL || '';
 
-    // Fetch Profile instantly
-    axios.get(`${apiUrl}/api/profile/${id}`)
+    axios.get(`${apiUrl}/api/profile-full/${id}`)
       .then(res => {
-        const advocate = res.data
-        setProfile(advocate)
-        setLoadingProfile(false)
+        setProfile(res.data.profile);
+        setNews(res.data.news);
+        setCenters(res.data.centers);
 
-        // 1. Independently fetch News
-        axios.get(`${apiUrl}/api/news`, { params: { specialization: advocate.specialization } })
-          .then(newsRes => {
-            setNews(newsRes.data)
-            setLoadingNews(false)
-          })
-          .catch(err => {
-            console.error('News error:', err)
-            setNews(null)
-            setLoadingNews(false)
-          })
-
-        // 2. Independently fetch Centers
-        const [lat, lng] = advocate.coordinates || [28.6139, 77.2090]
-        axios.get(`${apiUrl}/api/nearby-centers`, { params: { lat, lng } })
-          .then(centersRes => {
-            setCenters(centersRes.data)
-            setLoadingCenters(false)
-          })
-          .catch(err => {
-            console.error('Centers error:', err)
-            setCenters(null)
-            setLoadingCenters(false)
-          })
-
+        setLoadingProfile(false);
+        setLoadingNews(false);
+        setLoadingCenters(false);
       })
       .catch(err => {
-        console.error('Profile error:', err)
-        setLoadingProfile(false)
-        setLoadingNews(false)
-        setLoadingCenters(false)
-      })
+        console.error(err);
+        setLoadingProfile(false);
+        setLoadingNews(false);
+        setLoadingCenters(false);
+      });
 
-  }, [id])
+  }, [id]);
 
   return (
     <div className="App">
       {loadingProfile ? <SkeletonHero /> : <Hero profile={profile} />}
-      
+
       <main className="container">
         <Credentials credentials={profile?.credentials} />
-        
+
         <section>
           <h2 style={{ marginBottom: '2rem', textAlign: 'center' }}>Latest Crisis News</h2>
           <div className="credentials-grid">
@@ -92,7 +69,7 @@ function ProfilePage() {
 
         <section>
           <h2 style={{ marginBottom: '2rem', textAlign: 'center' }}>Nearby Resource Centers</h2>
-          
+
           {!loadingCenters && centers && <LeafletMap centers={centers} userLocation={profile?.coordinates} />}
           {loadingCenters && <SkeletonMap />}
 

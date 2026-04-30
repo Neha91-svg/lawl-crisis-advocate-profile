@@ -1,10 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
+const profileRoutes = require('./routes/profileRoutes');
 const mongoose = require('mongoose');
-const { fetchCrisisNews, fetchNearbyCenters } = require('./services/externalApi');
+
 const Consultation = require('./models/Consultation');
-const advocates = require('./data/advocates');
+const Profile = require('./models/Profile');
 const authRoutes = require('./routes/auth');
 require('dotenv').config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api', profileRoutes);
 
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/crisis_advocate';
@@ -25,10 +27,13 @@ mongoose.connect(MONGO_URI)
 
 const consultationLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, 
-  message: {
-    error: 'Too many requests',
-    message: 'Only 3 consultation requests are allowed per hour. Please try again later.'
+  max: 3,
+  handler: (req, res, next, options) => {
+    res.setHeader('Retry-After', Math.ceil(options.windowMs / 1000));
+    res.status(429).json({
+      error: 'Too many requests',
+      message: 'Only 3 consultation requests are allowed per hour. Please try again later.'
+    });
   },
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
@@ -43,21 +48,34 @@ app.get('/api/test', (req, res) => {
 });
 
 
-app.get('/api/profiles', (req, res) => {
-  res.json(advocates);
+app.get('/api/profiles', async (req, res) => {
+  try {
+    const profiles = await Profile.find({});
+    res.json(profiles);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.get('/api/profile/:id', async (req, res) => {
-  const advocate = advocates.find(a => a.id === req.params.id);
-  if (!advocate) {
-    return res.status(404).json({ error: 'Advocate not found' });
+  try {
+    const advocate = await Profile.findById(req.params.id);
+    if (!advocate) {
+      return res.status(404).json({ error: 'Advocate not found' });
+    }
+    res.json(advocate);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-  res.json(advocate);
 });
 
-app.get('/api/profile/basic', (req, res) => {
-  // Default to Neha for backward compatibility or the first one
-  res.json(advocates[0]);
+app.get('/api/profile/basic', async (req, res) => {
+  try {
+    const advocate = await Profile.findOne();
+    res.json(advocate);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.get('/api/news', async (req, res) => {
@@ -82,7 +100,7 @@ app.get('/api/nearby-centers', async (req, res) => {
 app.post('/api/consultation', consultationLimiter, async (req, res) => {
   try {
     const { name, phone, issue, timeSlot } = req.body;
-    
+
     // Generate Unique Reference ID: REF-XXXXXX
     const randomNum = Math.floor(100000 + Math.random() * 900000);
     const referenceId = `REF-${randomNum}`;
@@ -95,10 +113,10 @@ app.post('/api/consultation', consultationLimiter, async (req, res) => {
       referenceId
     });
     await newConsultation.save();
-    res.status(201).json({ 
-      message: 'Consultation request saved successfully', 
+    res.status(201).json({
+      message: 'Consultation request saved successfully',
       referenceId: referenceId,
-      data: newConsultation 
+      data: newConsultation
     });
   } catch (error) {
     console.error('Error saving consultation:', error.message);
