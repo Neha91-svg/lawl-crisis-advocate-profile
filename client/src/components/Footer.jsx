@@ -11,7 +11,7 @@ function Footer() {
       color: 'var(--text-secondary)'
     }}>
       <div className="container">
-        <h3 style={{ color: 'var(--primary-accent)', marginBottom: '1rem' }}>LexConnect</h3>
+        <h3 style={{ color: 'var(--primary-accent)', marginBottom: '1rem' }}>AdvocateHub</h3>
         <p style={{ marginBottom: '1rem' }}>
           Connecting you with trusted crisis advocates and legal professionals instantly.
         </p>
@@ -21,7 +21,7 @@ function Footer() {
           <a href="#" className="nav-link">Contact Us</a>
         </div>
         <p style={{ fontSize: '0.9rem' }}>
-          &copy; {new Date().getFullYear()} LexConnect. All rights reserved.
+          &copy; {new Date().getFullYear()} AdvocateHub. All rights reserved.
         </p>
       </div>
     </footer>
