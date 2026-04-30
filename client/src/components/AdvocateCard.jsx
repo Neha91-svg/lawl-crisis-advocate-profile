@@ -18,10 +18,10 @@ function AdvocateCard({ advocate }) {
       </div>
       
       <div style={{ marginTop: 'auto' }} className="d-flex flex-column gap-2">
-        <button onClick={() => navigate(`/profile/${advocate.id}`)} className="btn btn-outline w-100">
+        <button onClick={() => navigate(`/advocates/${advocate.id}`)} className="btn btn-outline w-100">
           View Profile
         </button>
-        <button onClick={() => navigate(`/profile/${advocate.id}?book=true`)} className="btn btn-primary w-100">
+        <button onClick={() => navigate(`/advocates/${advocate.id}?book=true`)} className="btn btn-primary w-100">
           Book Consultation
         </button>
       </div>

@@ -32,7 +32,7 @@ function Navbar() {
             <input type="text" className="search-input" placeholder="Find Advocate..." />
           </div>
 
-          <a href="#advocates" className="nav-link">Find Advocate</a>
+          <Link to="/advocates" className="nav-link">Find Advocate</Link>
           <a href="#rights" className="nav-link">Know Your Rights</a>
           <a href="#tips" className="nav-link">Legal Tips</a>
 

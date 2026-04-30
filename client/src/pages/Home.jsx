@@ -21,6 +21,8 @@ function Home() {
     ? advocates
     : advocates.filter(a => a.specialization === filter);
 
+  const featuredAdvocates = filteredAdvocates.slice(0, 4);
+
   if (loading) return <div className="container" style={{ padding: '4rem 0', textAlign: 'center' }}>Loading dashboard...</div>;
 
   return (
@@ -74,8 +76,8 @@ function Home() {
 
         {/* Advocate Horizontal Scroll */}
         <div className="horizontal-scroll mb-4" style={{ padding: '1rem 0' }}>
-          {filteredAdvocates.length > 0 ? (
-            filteredAdvocates.map(adv => (
+          {featuredAdvocates.length > 0 ? (
+            featuredAdvocates.map(adv => (
               <AdvocateCard key={adv.id} advocate={adv} />
             ))
           ) : (
@@ -83,6 +85,11 @@ function Home() {
               No advocates found for this specialization.
             </div>
           )}
+        </div>
+        <div className="text-center mb-5">
+          <a href="/advocates" className="btn btn-outline" style={{ padding: '0.75rem 2rem', fontSize: '1rem' }}>
+            View All Advocates →
+          </a>
         </div>
 
         {/* Legal Tips / Top Categories */}
